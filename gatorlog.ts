@@ -16,32 +16,23 @@
 /**
  * Functions to operate the gatorlog sensor
  */
-
- enum measurementType{
-	 degreesC=1,
-	 degreesF=2,
-	 humidity=3,
-	 pressure=4,
-	 eCO2=5,
-	 TVOC=6,
- } 
  
 //% color=#f44242 icon="\uf185"
-namespace gatorlog {
+namespace gatorLog {
     // Functions for reading Particle from the gatorlog in Particle or straight adv value
 	
 	//% weight=31 
-	//% blockId="gatorlog_begin" 
+	//% blockId="gatorLog_begin" 
 	//% block="Initialize gator:log"
-	//% shim=gatorlog::begin
+	//% shim=gatorLog::begin
 	export function begin(){
 		return
 	}
 	
 	//% weight=30
-	//% blockId="gatorlog_createFile"
+	//% blockId="gatorLog_createFile"
 	//% block="Create file named %value"
-	//% shim=gatorlog::createFile
+	//% shim=gatorLog::createFile
 	export function createFile(value: string){
 		return
 	}

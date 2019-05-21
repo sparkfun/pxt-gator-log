@@ -16,7 +16,7 @@
      * Distributed as-is; no warranty is given.
      */
 
-declare namespace gatorlog {
+declare namespace gatorLog {
 }
 
 // Auto-generated. Do not edit. Really.

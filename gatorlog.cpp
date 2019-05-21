@@ -21,7 +21,7 @@
 
 using namespace pxt;
 
-namespace gatorlog {
+namespace gatorLog {
 	MicroBitI2C i2c(I2C_SDA0, I2C_SCL0);
 	OpenLog *log; //BME280 handles our Temp, pressure, and humidity
 	
