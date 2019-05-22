@@ -54,7 +54,7 @@ class OpenLog{
   public:
     //These functions override the built-in print functions so that when the user does an 
     //myLogger.println("send this"); it gets chopped up and sent over I2C instead of Serial
-    virtual size_t write(uint8_t character);
+    virtual size_t writeCharacter(uint8_t character);
     int writeString(ManagedString ManagedString);
     bool syncFile(void);
 
