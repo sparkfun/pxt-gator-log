@@ -120,9 +120,9 @@ bool OpenLog::append(ManagedString fileName)
 }
 
 //Create a given file in the current directory
-bool OpenLog::create(ManagedString fileName)
+void OpenLog::create(ManagedString fileName)
 {
-  return (sendCommand(LOG_CREATE_FILE, fileName));
+  sendCommand(LOG_CREATE_FILE, fileName);
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
 
