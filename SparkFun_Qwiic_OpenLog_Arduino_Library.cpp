@@ -63,7 +63,7 @@ void OpenLog::begin(uint8_t deviceAddress)
   //_i2cPort->begin();
 
   //Check communication with device
-  //uint8_t status = getStatus();
+  getStatus();
 }
 
 //Get the version number from OpenLog
@@ -283,7 +283,7 @@ bool OpenLog::sendCommand(uint8_t registerNumber, ManagedString option1)
 		temp[position + 1] = option1.charAt(position);
 	}
 	//temp[1] = option1[0];
-	uBit.i2c.write(_deviceAddress, temp, option1.length() + 1, true);
+	uBit.i2c.write(_deviceAddress, temp, option1.length() + 1, false);
   //_i2cPort->beginTransmission(_deviceAddress);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
