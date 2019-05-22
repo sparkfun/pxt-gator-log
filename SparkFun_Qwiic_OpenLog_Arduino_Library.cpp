@@ -104,19 +104,19 @@ bool OpenLog::setI2CAddress(uint8_t addr)
 {
   ManagedString temp;
   temp = addr;
-  bool result = sendCommand(LOG_I2CADDRESS, temp);
+  sendCommand(LOG_I2CADDRESS, temp);
 
   //Upon completion any new communication must be with this new I2C address  
 
   SLAVE_ADDRESS = addr; //Change the address internally
 
-  return(result);
+  return(true);
 }
 
 //Append to a given file. If it doesn't exist it will be created
-bool OpenLog::append(ManagedString fileName)
+void OpenLog::append(ManagedString fileName)
 {
-  return (sendCommand(LOG_OPEN_FILE, fileName));
+  sendCommand(LOG_OPEN_FILE, fileName);
   //Upon completion any new characters sent to OpenLog will be recorded to this file
 }
 
@@ -128,17 +128,17 @@ void OpenLog::create(ManagedString fileName)
 }
 
 //Given a directory name, create it in whatever directory we are currently in
-bool OpenLog::makeDirectory(ManagedString directoryName)
+void OpenLog::makeDirectory(ManagedString directoryName)
 {
-  return (sendCommand(LOG_MKDIR, directoryName));
+  sendCommand(LOG_MKDIR, directoryName);
   //Upon completion Qwiic OpenLog will respond with its status
   //Qwiic OpenLog will continue logging whatever it next receives to the current open log
 }
 
 //Given a directory name, change to that directory
-bool OpenLog::changeDirectory(ManagedString directoryName)
+void OpenLog::changeDirectory(ManagedString directoryName)
 {
-  return (sendCommand(LOG_CD, directoryName));
+  sendCommand(LOG_CD, directoryName);
   //Upon completion Qwiic OpenLog will respond with its status
   //Qwiic OpenLog will continue logging whatever it next receives to the current open log
 }
@@ -186,14 +186,11 @@ void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, ManagedString fileN
 //Returns true if OpenLog ack'd. Use getNextDirectoryItem() to get the first item.
 bool OpenLog::searchDirectory(ManagedString options)
 {
-  if (sendCommand(LOG_LIST, options) == true)
-  {
-    _searchStarted = true;
-    return (true);
+  sendCommand(LOG_LIST, options);
+  _searchStarted = true;
+  return (true);
     //Upon completion Qwiic OpenLog will have a file name or directory name ready to respond with, terminated with a \0
     //It will continue to respond with a file name or directory until it responds with all 0xFFs (end of list)
-  }
-  return (false);
 }
 
 //Returns the name of the next file or directory folder in the current directory
@@ -279,7 +276,7 @@ uint32_t OpenLog::remove(ManagedString thingToDelete, bool removeEverything)
 }
 
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
-bool OpenLog::sendCommand(uint8_t registerNumber, ManagedString option1)
+void OpenLog::sendCommand(uint8_t registerNumber, ManagedString option1)
 {
 	char temp[option1.length() + 1];
 	temp[0] = registerNumber;
@@ -297,7 +294,6 @@ bool OpenLog::sendCommand(uint8_t registerNumber, ManagedString option1)
     _i2cPort->print(option1);
   }*/
  
-  return (true);
   //Upon completion any new characters sent to OpenLog will be recorded to this file
 }
 

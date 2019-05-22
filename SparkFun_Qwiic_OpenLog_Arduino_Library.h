@@ -65,10 +65,10 @@ class OpenLog{
     uint8_t getStatus(); //Returns various status bits
 
     bool setI2CAddress(uint8_t addr); //Set the I2C address we read and write to
-    bool append(ManagedString fileName); //Open and append to a file
+    void append(ManagedString fileName); //Open and append to a file
     void create(ManagedString fileName); //Create a file but don't open it for writing
-    bool makeDirectory(ManagedString directoryName); //Create the given directory
-    bool changeDirectory(ManagedString directoryName); //Change to the given directory
+    void makeDirectory(ManagedString directoryName); //Create the given directory
+    void changeDirectory(ManagedString directoryName); //Change to the given directory
     int32_t size(ManagedString fileName); //Given a file name, read the size of the file
 
     void read(uint8_t* userBuffer, uint16_t bufferSize, ManagedString fileName); //Read the contents of a file into the provided buffer
@@ -81,7 +81,7 @@ class OpenLog{
     uint32_t remove(ManagedString thingToDelete, bool removeEverthing); //Remove file or directory including the contents of the directory
 
     //These are the core functions that send a command to OpenLog
-    bool sendCommand(uint8_t registerNumber, ManagedString option1);
+    void sendCommand(uint8_t registerNumber, ManagedString option1);
 	uint8_t readRegister(uint8_t address, uint8_t offset);
     void readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8_t offset, uint8_t length);
   private:
