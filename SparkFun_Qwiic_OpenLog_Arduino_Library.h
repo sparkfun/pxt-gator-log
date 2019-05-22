@@ -33,7 +33,7 @@
 #include "ManagedString.h"
 
 //The default I2C address for the Qwiic OpenLog is 0x2A (42). 0x29 is also possible.
-#define QOL_DEFAULT_ADDRESS (uint8_t)42
+#define QOL_DEFAULT_ADDRESS 0x54
 
 //Bits found in the getStatus() uint8_t
 #define STATUS_SD_INIT_GOOD 0
