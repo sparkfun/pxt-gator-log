@@ -33,7 +33,7 @@
 
 MicroBit uBit;
 
-char SLAVE_ADDRESS =   0x54;
+char SLAVE_ADDRESS =   0x2A;
 
 static const char LOG_ID = 			0x00;
 static const char LOG_STATUS = 		0x01;
