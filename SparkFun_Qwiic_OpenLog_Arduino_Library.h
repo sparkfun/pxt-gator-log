@@ -32,9 +32,6 @@
 #include "MicroBit.h"
 #include "ManagedString.h"
 
-//The default I2C address for the Qwiic OpenLog is 0x2A (42). 0x29 is also possible.
-#define QOL_DEFAULT_ADDRESS 0x54
-
 //Bits found in the getStatus() uint8_t
 #define STATUS_SD_INIT_GOOD 0
 #define STATUS_LAST_COMMAND_SUCCESS 1
@@ -48,8 +45,6 @@
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 //The catch-all default is 32
-#define I2C_BUFFER_LENGTH 32
-
 
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
@@ -64,7 +59,7 @@ class OpenLog{
     bool syncFile(void);
 
     //By default use the default I2C addres, and use Wire port
-    void begin(uint8_t deviceAddress = QOL_DEFAULT_ADDRESS);
+    void begin();
 
     ManagedString getVersion(); //Returns a ManagedString that is the current firmware version
     uint8_t getStatus(); //Returns various status bits

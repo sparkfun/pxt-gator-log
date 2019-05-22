@@ -30,7 +30,10 @@
 #include "MicroBit.h"
 #include "ManagedString.h"
 #include <vector>
+
 MicroBit uBit;
+
+char SLAVE_ADDRESS =   0x54;
 
 static const char LOG_ID = 			0x00;
 static const char LOG_STATUS = 		0x01;
@@ -51,13 +54,14 @@ static const char LOG_RM =			0x0F;
 static const char LOG_RMRF =		0x10;
 static const char LOG_SYNC_FILE =	0x11;
 
+static const char I2C_BUFFER_LENGTH = 32;
+
+
 using namespace std;
 //Attempt communication with the device
 //Return true if we got a 'Polo' back from Marco
-void OpenLog::begin(uint8_t deviceAddress)
+void OpenLog::begin()
 {
-  _deviceAddress = deviceAddress; //If provided, store the I2C address from user
-
   //We require caller to begin their I2C port, with the speed of their choice
   //external to the library
   //_i2cPort->begin();
@@ -69,8 +73,8 @@ void OpenLog::begin(uint8_t deviceAddress)
 //Get the version number from OpenLog
 ManagedString OpenLog::getVersion()
 {
-  uint8_t versionMajor = readRegister(_deviceAddress, LOG_FWMAJOR); 
-  uint8_t versionMinor = readRegister(_deviceAddress, LOG_FWMINOR); 
+  uint8_t versionMajor = readRegister(SLAVE_ADDRESS, LOG_FWMAJOR); 
+  uint8_t versionMinor = readRegister(SLAVE_ADDRESS, LOG_FWMINOR); 
 
   return(ManagedString(versionMajor) + "." + ManagedString(versionMinor));
 }
@@ -90,7 +94,7 @@ uint8_t OpenLog::getStatus()
 {
   //sendCommand(LOG_STATUS, "");
 
-  return readRegister(_deviceAddress, LOG_STATUS);
+  return readRegister(SLAVE_ADDRESS, LOG_STATUS);
 }
 
 //Change the I2C address of the OpenLog
@@ -103,7 +107,7 @@ bool OpenLog::setI2CAddress(uint8_t addr)
 
   //Upon completion any new communication must be with this new I2C address  
 
-  _deviceAddress = addr; //Change the address internally
+  SLAVE_ADDRESS = addr; //Change the address internally
 
   return(result);
 }
@@ -144,10 +148,10 @@ int32_t OpenLog::size(ManagedString fileName)
   sendCommand(LOG_FILE_SIZE, fileName);
   //Upon completion Qwiic OpenLog will have 4 uint8_ts ready to be read
 
-  //_i2cPort->requestFrom(_deviceAddress, (uint8_t)4);
+  //_i2cPort->requestFrom(SLAVE_ADDRESS, (uint8_t)4);
 
   uint8_t data[4];
-  readRegisterRegion(_deviceAddress, data, LOG_FILE_SIZE, 4);
+  readRegisterRegion(SLAVE_ADDRESS, data, LOG_FILE_SIZE, 4);
   int32_t fileSize = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
 
   return (fileSize);
@@ -167,11 +171,11 @@ void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, ManagedString fileN
     uint8_t toGet = I2C_BUFFER_LENGTH; //Request up to a 32 uint8_t block
     if (leftToRead < toGet) toGet = leftToRead; //Go smaller if that's all we have left
 
-    /*_i2cPort->requestFrom(_deviceAddress, toGet);
+    /*_i2cPort->requestFrom(SLAVE_ADDRESS, toGet);
     while (_i2cPort->available())
       userBuffer[spotInBuffer++] = _i2cPort->read();
 	*/
-	readRegisterRegion(_deviceAddress, &userBuffer[spotInBuffer], LOG_READ_FILE, toGet);
+	readRegisterRegion(SLAVE_ADDRESS, &userBuffer[spotInBuffer], LOG_READ_FILE, toGet);
     leftToRead -= toGet;
 	spotInBuffer += toGet;
   }
@@ -198,12 +202,12 @@ ManagedString OpenLog::getNextDirectoryItem()
   if (_searchStarted == false) return (""); //We haven't done a search yet
 
   std::vector<char> itemName;
-  //_i2cPort->requestFrom(_deviceAddress, (uint8_t)I2C_BUFFER_LENGTH);
+  //_i2cPort->requestFrom(SLAVE_ADDRESS, (uint8_t)I2C_BUFFER_LENGTH);
   char tempData;
   //uint8_t charsReceived = 0;
   while (tempData != '\0')
   {
-	uBit.i2c.read(_deviceAddress, &tempData, 1, true);
+	uBit.i2c.read(SLAVE_ADDRESS, &tempData, 1, true);
 	itemName.push_back(tempData);
   }
   /*while (_i2cPort->available())
@@ -255,12 +259,12 @@ uint32_t OpenLog::remove(ManagedString thingToDelete, bool removeEverything)
   if(removeEverything == true)
   {
 	sendCommand(LOG_RMRF, thingToDelete); //-rf causes any directory to remove contents as well
-    uBit.i2c.read(_deviceAddress, data, 4);
+    uBit.i2c.read(SLAVE_ADDRESS, data, 4);
   }
   else
   {
 	sendCommand(LOG_RM, thingToDelete); //Just delete a thing
-    uBit.i2c.read(_deviceAddress, data, 4);
+    uBit.i2c.read(SLAVE_ADDRESS, data, 4);
   }
   //Upon completion Qwiic OpenLog will have 4 uint8_ts ready to read, representing the number of files beleted
 
@@ -283,8 +287,8 @@ bool OpenLog::sendCommand(uint8_t registerNumber, ManagedString option1)
 		temp[position + 1] = option1.charAt(position);
 	}
 	//temp[1] = option1[0];
-	uBit.i2c.write(_deviceAddress, temp, option1.length() + 1, false);
-  //_i2cPort->beginTransmission(_deviceAddress);
+	uBit.i2c.write(SLAVE_ADDRESS, temp, option1.length() + 1, false);
+  //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
   {
@@ -308,12 +312,12 @@ void OpenLog::readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8
 
 //Write a single character to Qwiic OpenLog
 size_t OpenLog::write(uint8_t character) {
-  uBit.i2c.writeRegister(_deviceAddress, LOG_WRITE_FILE, character);
+  uBit.i2c.writeRegister(SLAVE_ADDRESS, LOG_WRITE_FILE, character);
   return (1);
 }
 
 int OpenLog::writeString(ManagedString myString) {
-  //_i2cPort->beginTransmission(_deviceAddress);
+  //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerMap.writeFile);
   char temp[I2C_BUFFER_LENGTH];
   temp[0] = LOG_WRITE_FILE;
@@ -331,15 +335,15 @@ int OpenLog::writeString(ManagedString myString) {
   if (myString.length() > 0)
   {
     //_i2cPort->print(" "); //Include space
-    uBit.i2c.write(_deviceAddress, temp, (uint8_t)myString.length());
+    uBit.i2c.write(SLAVE_ADDRESS, temp, (uint8_t)myString.length());
   }
 
   return (1);
 }
 
 bool OpenLog::syncFile(){
-  uBit.i2c.write(_deviceAddress, (char *)LOG_SYNC_FILE, 1);
-  /*_i2cPort->beginTransmission(_deviceAddress);
+  uBit.i2c.write(SLAVE_ADDRESS, (char *)LOG_SYNC_FILE, 1);
+  /*_i2cPort->beginTransmission(SLAVE_ADDRESS);
   _i2cPort->write(registerMap.syncFile);
   
   if (_i2cPort->endTransmission() != 0){
