@@ -68,6 +68,7 @@ void OpenLog::begin()
 
   //Check communication with device
   getStatus();
+  getVersion();
 }
 
 //Get the version number from OpenLog
