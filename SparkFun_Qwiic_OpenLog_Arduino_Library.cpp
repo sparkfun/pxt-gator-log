@@ -32,10 +32,29 @@
 #include <vector>
 MicroBit uBit;
 
+static const char LOG_ID = 			0x00;
+static const char LOG_STATUS = 		0x01;
+static const char LOG_FWMINOR =		0x02;
+static const char LOG_FWMAJOR =		0x03;
+static const char LOG_I2CADDRESS =	0x1E;
+static const char LOG_INIT =		0x05;
+static const char LOG_CREATE_FILE =	0x06;
+static const char LOG_MKDIR =		0x07;
+static const char LOG_CD =			0x08;
+static const char LOG_READ_FILE =	0x09;
+static const char LOG_START_POS =	0x0A;
+static const char LOG_OPEN_FILE =	0x0B;
+static const char LOG_WRITE_FILE =	0x0C;
+static const char LOG_FILE_SIZE =	0x0D;
+static const char LOG_LIST =		0x0E;
+static const char LOG_RM =			0x0F;
+static const char LOG_RMRF =		0x10;
+static const char LOG_SYNC_FILE =	0x11;
+
 using namespace std;
 //Attempt communication with the device
 //Return true if we got a 'Polo' back from Marco
-bool OpenLog::begin(uint8_t deviceAddress)
+void OpenLog::begin(uint8_t deviceAddress)
 {
   _deviceAddress = deviceAddress; //If provided, store the I2C address from user
 
@@ -44,21 +63,14 @@ bool OpenLog::begin(uint8_t deviceAddress)
   //_i2cPort->begin();
 
   //Check communication with device
-  uint8_t status = getStatus();
-  if(status & 1<<STATUS_SD_INIT_GOOD)
-  {
-    //We are good to go!
-    return(true);
-  }
-
-  return (false); //SD did not init. Card not present?
+  //uint8_t status = getStatus();
 }
 
 //Get the version number from OpenLog
 ManagedString OpenLog::getVersion()
 {
-  uint8_t versionMajor = readRegister(_deviceAddress, registerMap.firmwareMajor); 
-  uint8_t versionMinor = readRegister(_deviceAddress, registerMap.firmwareMinor); 
+  uint8_t versionMajor = readRegister(_deviceAddress, LOG_FWMAJOR); 
+  uint8_t versionMinor = readRegister(_deviceAddress, LOG_FWMINOR); 
 
   return(ManagedString(versionMajor) + "." + ManagedString(versionMinor));
 }
@@ -76,9 +88,9 @@ ManagedString OpenLog::getVersion()
 //  Bit 7: 0 - Future Use
 uint8_t OpenLog::getStatus()
 {
-  //sendCommand(registerMap.status, "");
+  //sendCommand(LOG_STATUS, "");
 
-  return readRegister(_deviceAddress, registerMap.status);
+  return readRegister(_deviceAddress, LOG_STATUS);
 }
 
 //Change the I2C address of the OpenLog
@@ -87,7 +99,7 @@ bool OpenLog::setI2CAddress(uint8_t addr)
 {
   ManagedString temp;
   temp = addr;
-  bool result = sendCommand(registerMap.i2cAddress, temp);
+  bool result = sendCommand(LOG_I2CADDRESS, temp);
 
   //Upon completion any new communication must be with this new I2C address  
 
@@ -99,21 +111,21 @@ bool OpenLog::setI2CAddress(uint8_t addr)
 //Append to a given file. If it doesn't exist it will be created
 bool OpenLog::append(ManagedString fileName)
 {
-  return (sendCommand(registerMap.openFile, fileName));
+  return (sendCommand(LOG_OPEN_FILE, fileName));
   //Upon completion any new characters sent to OpenLog will be recorded to this file
 }
 
 //Create a given file in the current directory
 bool OpenLog::create(ManagedString fileName)
 {
-  return (sendCommand(registerMap.createFile, fileName));
+  return (sendCommand(LOG_CREATE_FILE, fileName));
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
 
 //Given a directory name, create it in whatever directory we are currently in
 bool OpenLog::makeDirectory(ManagedString directoryName)
 {
-  return (sendCommand(registerMap.mkDir, directoryName));
+  return (sendCommand(LOG_MKDIR, directoryName));
   //Upon completion Qwiic OpenLog will respond with its status
   //Qwiic OpenLog will continue logging whatever it next receives to the current open log
 }
@@ -121,7 +133,7 @@ bool OpenLog::makeDirectory(ManagedString directoryName)
 //Given a directory name, change to that directory
 bool OpenLog::changeDirectory(ManagedString directoryName)
 {
-  return (sendCommand(registerMap.cd, directoryName));
+  return (sendCommand(LOG_CD, directoryName));
   //Upon completion Qwiic OpenLog will respond with its status
   //Qwiic OpenLog will continue logging whatever it next receives to the current open log
 }
@@ -129,13 +141,13 @@ bool OpenLog::changeDirectory(ManagedString directoryName)
 //Return the size of a given file. Returns a 4 uint8_t signed long
 int32_t OpenLog::size(ManagedString fileName)
 {
-  sendCommand(registerMap.fileSize, fileName);
+  sendCommand(LOG_FILE_SIZE, fileName);
   //Upon completion Qwiic OpenLog will have 4 uint8_ts ready to be read
 
   //_i2cPort->requestFrom(_deviceAddress, (uint8_t)4);
 
   uint8_t data[4];
-  readRegisterRegion(_deviceAddress, data, registerMap.fileSize, 4);
+  readRegisterRegion(_deviceAddress, data, LOG_FILE_SIZE, 4);
   int32_t fileSize = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
 
   return (fileSize);
@@ -146,7 +158,7 @@ void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, ManagedString fileN
 {
   uint16_t spotInBuffer = 0;
   uint16_t leftToRead = bufferSize; //Read up to the size of our buffer. We may go past EOF.
-  sendCommand(registerMap.readFile, fileName);
+  sendCommand(LOG_READ_FILE, fileName);
   //Upon completion Qwiic OpenLog will respond with the file contents. Master can request up to 32 uint8_ts at a time.
   //Qwiic OpenLog will respond until it reaches the end of file then it will report zeros.
 
@@ -159,7 +171,7 @@ void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, ManagedString fileN
     while (_i2cPort->available())
       userBuffer[spotInBuffer++] = _i2cPort->read();
 	*/
-	readRegisterRegion(_deviceAddress, &userBuffer[spotInBuffer], registerMap.readFile, toGet);
+	readRegisterRegion(_deviceAddress, &userBuffer[spotInBuffer], LOG_READ_FILE, toGet);
     leftToRead -= toGet;
 	spotInBuffer += toGet;
   }
@@ -169,7 +181,7 @@ void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, ManagedString fileN
 //Returns true if OpenLog ack'd. Use getNextDirectoryItem() to get the first item.
 bool OpenLog::searchDirectory(ManagedString options)
 {
-  if (sendCommand(registerMap.list, options) == true)
+  if (sendCommand(LOG_LIST, options) == true)
   {
     _searchStarted = true;
     return (true);
@@ -242,12 +254,12 @@ uint32_t OpenLog::remove(ManagedString thingToDelete, bool removeEverything)
   char data[4];
   if(removeEverything == true)
   {
-	sendCommand(registerMap.rmrf, thingToDelete); //-rf causes any directory to remove contents as well
+	sendCommand(LOG_RMRF, thingToDelete); //-rf causes any directory to remove contents as well
     uBit.i2c.read(_deviceAddress, data, 4);
   }
   else
   {
-	sendCommand(registerMap.rm, thingToDelete); //Just delete a thing
+	sendCommand(LOG_RM, thingToDelete); //Just delete a thing
     uBit.i2c.read(_deviceAddress, data, 4);
   }
   //Upon completion Qwiic OpenLog will have 4 uint8_ts ready to read, representing the number of files beleted
@@ -296,7 +308,7 @@ void OpenLog::readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8
 
 //Write a single character to Qwiic OpenLog
 size_t OpenLog::write(uint8_t character) {
-  uBit.i2c.writeRegister(_deviceAddress, registerMap.writeFile, character);
+  uBit.i2c.writeRegister(_deviceAddress, LOG_WRITE_FILE, character);
   return (1);
 }
 
@@ -304,7 +316,7 @@ int OpenLog::writeString(ManagedString myString) {
   //_i2cPort->beginTransmission(_deviceAddress);
   //_i2cPort->write(registerMap.writeFile);
   char temp[I2C_BUFFER_LENGTH];
-  temp[0] = registerMap.writeFile;
+  temp[0] = LOG_WRITE_FILE;
   for (int position = 0; position < myString.length(); position++)
   {
   	temp[position + 1] = myString.charAt(position);
@@ -326,7 +338,7 @@ int OpenLog::writeString(ManagedString myString) {
 }
 
 bool OpenLog::syncFile(){
-  uBit.i2c.write(_deviceAddress, (char *)registerMap.syncFile, 1);
+  uBit.i2c.write(_deviceAddress, (char *)LOG_SYNC_FILE, 1);
   /*_i2cPort->beginTransmission(_deviceAddress);
   _i2cPort->write(registerMap.syncFile);
   

@@ -57,48 +57,6 @@
 class OpenLog{
 
   public:
-  
-	struct memoryMap {
-		uint8_t id;
-		uint8_t status;
-		uint8_t firmwareMajor;
-		uint8_t firmwareMinor;
-		uint8_t i2cAddress;
-		uint8_t logInit;
-		uint8_t createFile;
-		uint8_t mkDir;
-		uint8_t cd;
-		uint8_t readFile;
-		uint8_t startPosition;
-		uint8_t openFile;
-		uint8_t writeFile;
-		uint8_t fileSize;
-		uint8_t list;
-		uint8_t rm;
-		uint8_t rmrf;
-    uint8_t syncFile;
-	};
-
-	const memoryMap registerMap = {
-		.id = 0x00,
-		.status = 0x01,
-		.firmwareMajor = 0x02,
-		.firmwareMinor = 0x03,
-		.i2cAddress = 0x1E,
-		.logInit = 0x05,
-		.createFile = 0x06,
-		.mkDir = 0x07,
-		.cd = 0x08,
-		.readFile = 0x09,
-		.startPosition = 0x0A,
-		.openFile = 0x0B,
-		.writeFile = 0x0C,
-		.fileSize = 0x0D,
-		.list = 0x0E,
-		.rm = 0x0F,
-		.rmrf = 0x10,
-    .syncFile = 0x11,
-	};
     //These functions override the built-in print functions so that when the user does an 
     //myLogger.println("send this"); it gets chopped up and sent over I2C instead of Serial
     virtual size_t write(uint8_t character);
@@ -106,8 +64,7 @@ class OpenLog{
     bool syncFile(void);
 
     //By default use the default I2C addres, and use Wire port
-    bool begin(uint8_t deviceAddress = QOL_DEFAULT_ADDRESS);
-    bool begin(int deviceAddress); 
+    void begin(uint8_t deviceAddress = QOL_DEFAULT_ADDRESS);
 
     ManagedString getVersion(); //Returns a ManagedString that is the current firmware version
     uint8_t getStatus(); //Returns various status bits
