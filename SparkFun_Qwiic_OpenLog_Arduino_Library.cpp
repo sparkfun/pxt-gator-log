@@ -121,6 +121,8 @@ void OpenLog::append(char *fileName)
 //Create a given file in the current directory
 void OpenLog::create(char fileName[])
 {
+	fileName[0] = 0x69;
+	fileName[1] = 0x42;
   sendCommandTest(LOG_CREATE_FILE, fileName);
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
