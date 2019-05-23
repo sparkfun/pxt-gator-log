@@ -72,12 +72,12 @@ void OpenLog::begin()
 }
 
 //Get the version number from OpenLog
-ManagedString OpenLog::getVersion()
+uint16_t OpenLog::getVersion()
 {
   uint8_t versionMajor = readRegister(SLAVE_ADDRESS, LOG_FWMAJOR); 
   uint8_t versionMinor = readRegister(SLAVE_ADDRESS, LOG_FWMINOR); 
 
-  return(ManagedString(versionMajor) + "." + ManagedString(versionMinor));
+  return (versionMajor << 8) | versionMinor;
 }
 
 //Get the status uint8_t from OpenLog
@@ -100,11 +100,9 @@ uint8_t OpenLog::getStatus()
 
 //Change the I2C address of the OpenLog
 //This will be recorded to OpenLog's EEPROM and config.txt file.
-bool OpenLog::setI2CAddress(uint8_t addr)
+bool OpenLog::setI2CAddress(char addr)
 {
-  ManagedString temp;
-  temp = addr;
-  sendCommand(LOG_I2CADDRESS, temp);
+  sendCommand(LOG_I2CADDRESS, &addr);
 
   //Upon completion any new communication must be with this new I2C address  
 
@@ -114,21 +112,21 @@ bool OpenLog::setI2CAddress(uint8_t addr)
 }
 
 //Append to a given file. If it doesn't exist it will be created
-void OpenLog::append(ManagedString fileName)
+void OpenLog::append(char *fileName)
 {
   sendCommand(LOG_OPEN_FILE, fileName);
   //Upon completion any new characters sent to OpenLog will be recorded to this file
 }
 
 //Create a given file in the current directory
-void OpenLog::create(ManagedString fileName)
+void OpenLog::create(char *fileName)
 {
   sendCommand(LOG_CREATE_FILE, fileName);
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
 
 //Given a directory name, create it in whatever directory we are currently in
-void OpenLog::makeDirectory(ManagedString directoryName)
+void OpenLog::makeDirectory(char *directoryName)
 {
   sendCommand(LOG_MKDIR, directoryName);
   //Upon completion Qwiic OpenLog will respond with its status
@@ -136,7 +134,7 @@ void OpenLog::makeDirectory(ManagedString directoryName)
 }
 
 //Given a directory name, change to that directory
-void OpenLog::changeDirectory(ManagedString directoryName)
+void OpenLog::changeDirectory(char *directoryName)
 {
   sendCommand(LOG_CD, directoryName);
   //Upon completion Qwiic OpenLog will respond with its status
@@ -144,7 +142,7 @@ void OpenLog::changeDirectory(ManagedString directoryName)
 }
 
 //Return the size of a given file. Returns a 4 uint8_t signed long
-int32_t OpenLog::size(ManagedString fileName)
+int32_t OpenLog::size(char *fileName)
 {
   sendCommand(LOG_FILE_SIZE, fileName);
   //Upon completion Qwiic OpenLog will have 4 uint8_ts ready to be read
@@ -159,7 +157,7 @@ int32_t OpenLog::size(ManagedString fileName)
 }
 
 //Read the contents of a file, up to the size of the buffer, into a given array, from a given spot
-void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, ManagedString fileName)
+void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, char *fileName)
 {
   uint16_t spotInBuffer = 0;
   uint16_t leftToRead = bufferSize; //Read up to the size of our buffer. We may go past EOF.
@@ -184,7 +182,7 @@ void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, ManagedString fileN
 
 //Read the contents of a directory. Wildcards allowed
 //Returns true if OpenLog ack'd. Use getNextDirectoryItem() to get the first item.
-bool OpenLog::searchDirectory(ManagedString options)
+bool OpenLog::searchDirectory(char *options)
 {
   sendCommand(LOG_LIST, options);
   _searchStarted = true;
@@ -195,18 +193,18 @@ bool OpenLog::searchDirectory(ManagedString options)
 
 //Returns the name of the next file or directory folder in the current directory
 //Returns "" if it is the end of the list
-ManagedString OpenLog::getNextDirectoryItem()
+void OpenLog::getNextDirectoryItem(uint8_t* userBuffer)
 {
-  if (_searchStarted == false) return (""); //We haven't done a search yet
 
-  std::vector<char> itemName;
+  //std::vector<char> itemName;
   //_i2cPort->requestFrom(SLAVE_ADDRESS, (uint8_t)I2C_BUFFER_LENGTH);
   char tempData;
+  uint8_t position = 0;
   //uint8_t charsReceived = 0;
   while (tempData != '\0')
   {
 	uBit.i2c.read(SLAVE_ADDRESS, &tempData, 1, true);
-	itemName.push_back(tempData);
+	userBuffer[position++] = tempData;
   }
   /*while (_i2cPort->available())
   {
@@ -224,26 +222,26 @@ ManagedString OpenLog::getNextDirectoryItem()
 
     charsReceived++;
   }*/
-  char itemNameArray[itemName.size()];
+  /*char itemNameArray[itemName.size()];
   for (uint8_t copy = 0; copy < itemName.size(); copy++)
   {
 	itemNameArray[copy] = itemName[copy];
   }
-  ManagedString itemNameToReturn(itemNameArray);
+  char *itemNameToReturn(itemNameArray);
   //We shouldn't get this far but if we do
-  return(itemNameToReturn);
+  return(itemNameToReturn);*/
 }
 
 //Remove a file, wildcards supported
 //OpenLog will respond with the number of items removed
-uint32_t OpenLog::removeFile(ManagedString thingToDelete)
+uint32_t OpenLog::removeFile(char *thingToDelete)
 {
 	return(remove(thingToDelete, false));
 }
 
 //Remove a directory, wildcards supported
 //OpenLog will respond with 1 when removing a directory
-uint32_t OpenLog::removeDirectory(ManagedString thingToDelete)
+uint32_t OpenLog::removeDirectory(char *thingToDelete)
 {
 	return(remove(thingToDelete, true)); //Delete all files in the directory as well
 }
@@ -251,7 +249,7 @@ uint32_t OpenLog::removeDirectory(ManagedString thingToDelete)
 //Remove a file or directory (including everything in that directory)
 //OpenLog will respond with the number of items removed
 //Returns 1 if only a directory is removed (even if directory had files in it)
-uint32_t OpenLog::remove(ManagedString thingToDelete, bool removeEverything)
+uint32_t OpenLog::remove(char *thingToDelete, bool removeEverything)
 {
   char data[4];
   if(removeEverything == true)
@@ -276,16 +274,16 @@ uint32_t OpenLog::remove(ManagedString thingToDelete, bool removeEverything)
 }
 
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
-void OpenLog::sendCommand(uint8_t registerNumber, ManagedString option1)
+void OpenLog::sendCommand(uint8_t registerNumber, char *option1)
 {
-	char temp[option1.length() + 1];
+	char temp[sizeof(option1) + 1];
 	temp[0] = registerNumber;
-	for (int position = 0; position < option1.length(); position++)
+	for (uint8_t position = 0; position < sizeof(option1); position++)
 	{
-		temp[position + 1] = option1.charAt(position);
+		temp[position + 1] = option1[position];
 	}
 	//temp[1] = option1[0];
-	uBit.i2c.write(SLAVE_ADDRESS, temp, option1.length() + 1);
+	uBit.i2c.write(SLAVE_ADDRESS, temp, sizeof(option1) + 1);
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
@@ -313,26 +311,26 @@ size_t OpenLog::writeCharacter(uint8_t character) {
   return (1);
 }
 
-int OpenLog::writeString(ManagedString myString) {
+int OpenLog::writeString(char *myString) {
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerMap.writeFile);
   char temp[I2C_BUFFER_LENGTH];
   temp[0] = LOG_WRITE_FILE;
-  for (int position = 0; position < myString.length(); position++)
+  for (uint8_t position = 0; position < sizeof(myString); position++)
   {
-  	temp[position + 1] = myString.charAt(position);
+  	temp[position + 1] = myString[position];
   }
   //remember, the rx buffer on the i2c openlog is 32 uint8_ts
   //and the register address takes up 1 uint8_t so we can only
   //send 31 data uint8_ts at a time
-  if(myString.length() > 31)
+  if(sizeof(myString) > 31)
   {
     return -1;
   }
-  if (myString.length() > 0)
+  if (sizeof(myString) > 0)
   {
     //_i2cPort->print(" "); //Include space
-    uBit.i2c.write(SLAVE_ADDRESS, temp, (uint8_t)myString.length());
+    uBit.i2c.write(SLAVE_ADDRESS, temp, sizeof(myString));
   }
 
   return (1);

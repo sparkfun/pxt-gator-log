@@ -54,33 +54,33 @@ class OpenLog{
     //These functions override the built-in print functions so that when the user does an 
     //myLogger.println("send this"); it gets chopped up and sent over I2C instead of Serial
     virtual size_t writeCharacter(uint8_t character);
-    int writeString(ManagedString ManagedString);
+    int writeString(char *myString);
     bool syncFile(void);
 
     //By default use the default I2C addres, and use Wire port
     void begin();
 
-    ManagedString getVersion(); //Returns a ManagedString that is the current firmware version
+    uint16_t getVersion(); //Returns a char *that is the current firmware version
     uint8_t getStatus(); //Returns various status bits
 
-    bool setI2CAddress(uint8_t addr); //Set the I2C address we read and write to
-    void append(ManagedString fileName); //Open and append to a file
-    void create(ManagedString fileName); //Create a file but don't open it for writing
-    void makeDirectory(ManagedString directoryName); //Create the given directory
-    void changeDirectory(ManagedString directoryName); //Change to the given directory
-    int32_t size(ManagedString fileName); //Given a file name, read the size of the file
+    bool setI2CAddress(char addr); //Set the I2C address we read and write to
+    void append(char *fileName); //Open and append to a file
+    void create(char *fileName); //Create a file but don't open it for writing
+    void makeDirectory(char *directoryName); //Create the given directory
+    void changeDirectory(char *directoryName); //Change to the given directory
+    int32_t size(char *fileName); //Given a file name, read the size of the file
 
-    void read(uint8_t* userBuffer, uint16_t bufferSize, ManagedString fileName); //Read the contents of a file into the provided buffer
+    void read(uint8_t* userBuffer, uint16_t bufferSize, char *fileName); //Read the contents of a file into the provided buffer
 
-    bool searchDirectory(ManagedString options); //Search the current directory for a given wildcard
-    ManagedString getNextDirectoryItem(); //Return the next file or directory from the search
+    bool searchDirectory(char *options); //Search the current directory for a given wildcard
+    void getNextDirectoryItem(uint8_t* userBuffer); //Return the next file or directory from the search
 
-    uint32_t removeFile(ManagedString thingToDelete); //Remove file
-    uint32_t removeDirectory(ManagedString thingToDelete); //Remove a directory including the contents of the directory
-    uint32_t remove(ManagedString thingToDelete, bool removeEverthing); //Remove file or directory including the contents of the directory
+    uint32_t removeFile(char *thingToDelete); //Remove file
+    uint32_t removeDirectory(char *thingToDelete); //Remove a directory including the contents of the directory
+    uint32_t remove(char *thingToDelete, bool removeEverthing); //Remove file or directory including the contents of the directory
 
     //These are the core functions that send a command to OpenLog
-    void sendCommand(uint8_t registerNumber, ManagedString option1);
+    void sendCommand(uint8_t registerNumber, char *option1);
 	uint8_t readRegister(uint8_t address, uint8_t offset);
     void readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8_t offset, uint8_t length);
   private:
