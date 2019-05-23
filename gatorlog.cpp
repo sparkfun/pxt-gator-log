@@ -38,6 +38,11 @@ namespace gatorLog {
 	//%
 	void createFile(ManagedString value)
 	{
-		log->create();
+		char temp[value.length()];
+		for (int position = 0; position < value.length(); position++)
+		{
+			temp[position] = value.charAt(position);
+		}
+		log->create(temp);
 	}
 }
