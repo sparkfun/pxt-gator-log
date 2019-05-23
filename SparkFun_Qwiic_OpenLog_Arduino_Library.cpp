@@ -121,9 +121,8 @@ void OpenLog::append(ManagedString fileName)
 }
 
 //Create a given file in the current directory
-void OpenLog::create()
+void OpenLog::create(ManagedString fileName)
 {
-  uBit.i2c.writeRegister(SLAVE_ADDRESS, 0x69, 0x42);
   sendCommand(LOG_CREATE_FILE, "wopwopwopwop");
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
@@ -286,7 +285,7 @@ void OpenLog::sendCommand(uint8_t registerNumber, ManagedString option1)
 		temp[position + 1] = option1.charAt(position);
 	}
 	//temp[1] = option1[0];
-	uBit.i2c.write(SLAVE_ADDRESS, temp, 4);
+	uBit.i2c.write(SLAVE_ADDRESS, temp, option1.length() + 1);
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
