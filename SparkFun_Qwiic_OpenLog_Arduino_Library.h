@@ -80,8 +80,7 @@ class OpenLog{
     uint32_t remove(char *thingToDelete, bool removeEverthing); //Remove file or directory including the contents of the directory
 
     //These are the core functions that send a command to OpenLog
-    void sendCommand(uint8_t registerNumber, char *option1);
-    void sendCommandTest(uint8_t registerNumber, char option1[]);
+    void sendCommand(uint8_t registerNumber, char option1[]);
 	uint8_t readRegister(uint8_t address, uint8_t offset);
     void readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8_t offset, uint8_t length);
   private:
