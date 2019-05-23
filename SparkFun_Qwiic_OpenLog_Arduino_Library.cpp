@@ -279,7 +279,6 @@ uint32_t OpenLog::remove(ManagedString thingToDelete, bool removeEverything)
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
 void OpenLog::sendCommand(uint8_t registerNumber, ManagedString option1)
 {
-	uBit.i2c.write(SLAVE_ADDRESS, (char *)0x69, 1);
 	char temp[option1.length() + 1];
 	temp[0] = registerNumber;
 	for (int position = 0; position < option1.length(); position++)

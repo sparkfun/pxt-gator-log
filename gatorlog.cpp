@@ -36,7 +36,7 @@ namespace gatorLog {
 	}
 	
 	//%
-	void createFile()
+	void createFile(ManagedString value)
 	{
 		log->create();
 	}

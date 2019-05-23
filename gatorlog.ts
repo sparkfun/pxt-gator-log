@@ -31,9 +31,9 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_createFile"
-	//% block="Create file named"
+	//% block="Create file named %value"
 	//% shim=gatorLog::createFile
-	export function createFile(){
+	export function createFile(value: string){
 		return
 	}
 }
