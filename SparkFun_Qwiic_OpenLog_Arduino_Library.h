@@ -65,7 +65,7 @@ class OpenLog{
 
     bool setI2CAddress(char addr); //Set the I2C address we read and write to
     void append(char *fileName); //Open and append to a file
-    void create(char fileName); //Create a file but don't open it for writing
+    void create(char *fileName); //Create a file but don't open it for writing
     void makeDirectory(char *directoryName); //Create the given directory
     void changeDirectory(char *directoryName); //Change to the given directory
     int32_t size(char *fileName); //Given a file name, read the size of the file
