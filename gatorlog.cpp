@@ -18,6 +18,7 @@
 #include <cstdint>
 #include <math.h>
 #include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
+#include "ManagedString.h"
 
 using namespace pxt;
 

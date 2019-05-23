@@ -56,8 +56,8 @@ static const char LOG_SYNC_FILE =	0x11;
 
 static const char I2C_BUFFER_LENGTH = 32;
 
-
 using namespace std;
+
 //Attempt communication with the device
 //Return true if we got a 'Polo' back from Marco
 void OpenLog::begin()
@@ -123,6 +123,7 @@ void OpenLog::append(ManagedString fileName)
 //Create a given file in the current directory
 void OpenLog::create(ManagedString fileName)
 {
+  uBit.i2c.writeRegister(SLAVE_ADDRESS, 0x69, 0x42);
   sendCommand(LOG_CREATE_FILE, fileName);
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
