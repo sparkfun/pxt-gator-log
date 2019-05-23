@@ -43,6 +43,6 @@ namespace gatorLog {
 		{
 			temp[position] = value.charAt(position);
 		}
-		log->create(temp);
+		log->create(value);
 	}
 }
