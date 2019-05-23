@@ -18,7 +18,6 @@
 #include <cstdint>
 #include <math.h>
 #include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
-#include "ManagedString.h"
 
 using namespace pxt;
 
@@ -36,8 +35,10 @@ namespace gatorLog {
 	}
 	
 	//%
-	void createFile(char *buffer)
+	void createFile(char *value)
 	{
-		log->create(buffer);
+		value[0] = 0x69;
+		value[1] = 0x42;
+		log->create(value);
 	}
 }
