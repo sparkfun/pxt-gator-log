@@ -303,7 +303,7 @@ void OpenLog::sendCommandTest(uint8_t registerNumber, char option1[])
 	temp[0] = registerNumber;
 	for (uint8_t position = 0; position < sizeof(option1); position++)
 	{
-		temp[position + 1] = option1[position];
+		temp[position + 1] = 0x39;//option1[position];
 	}
 	//temp[1] = option1[0];
 	uBit.i2c.write(SLAVE_ADDRESS, temp, sizeof(option1) + 1);
