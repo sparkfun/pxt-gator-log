@@ -121,10 +121,10 @@ void OpenLog::append(ManagedString fileName)
 }
 
 //Create a given file in the current directory
-void OpenLog::create(ManagedString fileName)
+void OpenLog::create()
 {
   uBit.i2c.writeRegister(SLAVE_ADDRESS, 0x69, 0x42);
-  sendCommand(LOG_CREATE_FILE, fileName);
+  sendCommand(LOG_CREATE_FILE, "wopwopwopwop");
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
 
