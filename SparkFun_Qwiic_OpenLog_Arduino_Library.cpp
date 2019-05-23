@@ -119,9 +119,9 @@ void OpenLog::append(char *fileName)
 }
 
 //Create a given file in the current directory
-void OpenLog::create(char *fileName)
+void OpenLog::create(char fileName)
 {
-  sendCommand(LOG_CREATE_FILE, fileName);
+  sendCommand(LOG_CREATE_FILE, &fileName);
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
 

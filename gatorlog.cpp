@@ -36,7 +36,7 @@ namespace gatorLog {
 	}
 	
 	//%
-	void createFile(char *buffer)
+	void createFile(char buffer)
 	{
 		log->create(buffer);
 	}
