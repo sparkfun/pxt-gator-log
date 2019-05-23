@@ -297,7 +297,7 @@ void OpenLog::sendCommand(uint8_t registerNumber, char *option1)
   //Upon completion any new characters sent to OpenLog will be recorded to this file
 }
 
-void OpenLog::sendCommandTest(uint8_t registerNumber, char *option1)
+void OpenLog::sendCommandTest(uint8_t registerNumber, char option1[])
 {
 	char temp[sizeof(option1) + 1];
 	temp[0] = registerNumber;
