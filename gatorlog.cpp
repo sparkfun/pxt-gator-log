@@ -35,10 +35,14 @@ namespace gatorLog {
 	}
 	
 	//%
-	void createFile(uint8_t value)
+	void createFile(char *value)
 	{
+		for (int i = 0; i < strlen(value); i++)
+		{
+		  log->check(value[i]);
+		}
 		//value[0] = 0x69;
 		//value[1] = 0x42;
-		log->check(value);
+
 	}
 }

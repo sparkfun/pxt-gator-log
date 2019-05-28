@@ -33,7 +33,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_createFile"
 	//% block="Create file named %value"
 	//% shim=gatorLog::createFile
-	export function createFile(value: number){
+	export function createFile(value: string){
 		return
 	}
 }
