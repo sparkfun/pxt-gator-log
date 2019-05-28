@@ -39,6 +39,6 @@ namespace gatorLog {
 	{
 		//value[0] = 0x69;
 		//value[1] = 0x42;
-		log->create((char *)value);
+		log->check(value);
 	}
 }

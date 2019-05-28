@@ -126,6 +126,11 @@ void OpenLog::create(char *fileName)
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
 
+void OpenLog::check(uint8_t value)
+{ 
+	uBit.i2c.writeRegister(SLAVE_ADDRESS, LOG_CREATE_FILE, value);
+}
+
 //Given a directory name, create it in whatever directory we are currently in
 void OpenLog::makeDirectory(char *directoryName)
 {
