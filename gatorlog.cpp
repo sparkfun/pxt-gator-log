@@ -43,10 +43,8 @@ namespace gatorLog {
 	void createFile(String value)
 	{
 		const char * temp = PXT_STRING_DATA(value);
-		for (uint8_t i = 0; i < strlen(temp); i++)
-		{
-		  log->check(temp[i]);
-		}
+
+		log->create((char *)temp);
 		//value[0] = 0x69;
 		//value[1] = 0x42;
 
