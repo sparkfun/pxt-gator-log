@@ -121,7 +121,6 @@ void OpenLog::append(char *fileName)
 //Create a given file in the current directory
 void OpenLog::create(char *fileName)
 {
-  fileName[0] = 0x34;
   sendCommand(LOG_CREATE_FILE, fileName);//Correctly passing things into sendCommand, is fileName properly passed into here though?
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
@@ -282,14 +281,14 @@ uint32_t OpenLog::remove(char *thingToDelete, bool removeEverything)
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
 void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 {
-	char temp[sizeof(option1) + 1];
+	char temp[strlen(option1) + 1];
 	temp[0] = registerNumber;
-	for (uint8_t position = 0; position < sizeof(option1); position++)
+	for (uint8_t position = 0; position < strlen(option1); position++)
 	{
 		temp[position + 1] = option1[position];
 	}
 	//temp[1] = option1[0];
-	uBit.i2c.write(SLAVE_ADDRESS, temp, sizeof(option1) + 1);
+	uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)

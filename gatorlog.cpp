@@ -45,8 +45,5 @@ namespace gatorLog {
 		const char * temp = PXT_STRING_DATA(value);
 
 		log->create((char *)temp);
-		//value[0] = 0x69;
-		//value[1] = 0x42;
-
 	}
 }
