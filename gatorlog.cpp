@@ -19,11 +19,16 @@
 #include <math.h>
 #include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
 
+
 using namespace pxt;
 
 namespace gatorLog {
 	MicroBitI2C i2c(I2C_SDA0, I2C_SCL0);
 	OpenLog *log; //BME280 handles our Temp, pressure, and humidity
+	//#define PXT_STRING_DATA(str) str->data
+	#ifndef PXT_STRING_DATA
+	#define PXT_STRING_DATA(str) str->data
+	#endif
 	
 	/*
 	* Initializes the particle sensor
@@ -35,11 +40,12 @@ namespace gatorLog {
 	}
 	
 	//%
-	void createFile(char *value)
+	void createFile(String value)
 	{
-		for (int i = 0; i < strlen(value); i++)
+		const char * temp = PXT_STRING_DATA(value);
+		for (uint8_t i = 0; i < strlen(temp); i++)
 		{
-		  log->check(value[i]);
+		  log->check(temp[i]);
 		}
 		//value[0] = 0x69;
 		//value[1] = 0x42;
