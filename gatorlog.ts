@@ -73,8 +73,8 @@ namespace gatorLog {
 	//% blockId="gatorLog_sizeOFile"
 	//% block="Get size of file with name %value"
 	//% shim=gatorLog::sizeOfFile
-	export function sizeOfFile(value: string){
-		return
+	export function sizeOfFile(value: string): number{
+		return 0
 	}
 	
 	//% weight=30
@@ -82,15 +82,15 @@ namespace gatorLog {
 	//% block="Search current directory for %value"
 	//% shim=gatorLog::search
 	export function search(value: string): boolean{
-		return search(value);
+		return true;
 	}
 	
 	//% weight=30
 	//% blockId="gatorLog_getNextItem"
-	//% block="Write string %value" to current file"
+	//% block="Get name of next item"
 	//% shim=gatorLog::getNextItem
 	export function getNextItem(): string{
-		return getNextItem();
+		return "item";
 	}
 	
 	//% weight=30
