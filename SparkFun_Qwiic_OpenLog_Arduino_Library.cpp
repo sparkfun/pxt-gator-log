@@ -316,21 +316,21 @@ int OpenLog::writeString(char *myString) {
   //_i2cPort->write(registerMap.writeFile);
   char temp[I2C_BUFFER_LENGTH];
   temp[0] = LOG_WRITE_FILE;
-  for (uint8_t position = 0; position < sizeof(myString); position++)
+  for (uint8_t position = 0; position < strlen(myString); position++)
   {
   	temp[position + 1] = myString[position];
   }
   //remember, the rx buffer on the i2c openlog is 32 uint8_ts
   //and the register address takes up 1 uint8_t so we can only
   //send 31 data uint8_ts at a time
-  if(sizeof(myString) > 31)
+  if(strlen(myString) > 31)
   {
     return -1;
   }
-  if (sizeof(myString) > 0)
+  if (strlen(myString) > 0)
   {
     //_i2cPort->print(" "); //Include space
-    uBit.i2c.write(SLAVE_ADDRESS, temp, sizeof(myString));
+    uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(myString));
   }
 
   return (1);

@@ -47,7 +47,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_writeStringData"
-	//% block="Open file %value"
+	//% block="Write string %value | to current file"
 	//% shim=gatorLog::writeStringData
 	export function writeStringData(value: string){
 		return
@@ -55,7 +55,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_writeNumberData"
-	//% block="Open file %value"
+	//% block="Write number %value | to current file"
 	export function writeNumberData(value: number){
 		writeStringData(value.toString())
 		return
