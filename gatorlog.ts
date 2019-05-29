@@ -38,18 +38,26 @@ namespace gatorLog {
 	}
 	
 	//% weight=30
-	//% blockId="gatorLog_appendStringToFile"
-	//% block="Write string %value | to current file"
-	//% shim=gatorLog::appendStringToFile
-	export function appendStringToFile(value: string){
+	//% blockId="gatorLog_openFile"
+	//% block="Open file %value"
+	//% shim=gatorLog::openFile
+	export function openFile(value: string){
 		return
 	}
 	
 	//% weight=30
-	//% blockId="gatorLog_appendNumberToFile"
-	//% block="Write string %value | to current file"
-	export function appendNumberToFile(value: number){
-		appendStringToFile(value.toString())
+	//% blockId="gatorLog_writeStringData"
+	//% block="Open file %value"
+	//% shim=gatorLog::writeStringData
+	export function writeStringData(value: string){
+		return
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_writeNumberData"
+	//% block="Open file %value"
+	export function writeNumberData(value: number){
+		writeStringData(value.toString())
 		return
 	}
 	

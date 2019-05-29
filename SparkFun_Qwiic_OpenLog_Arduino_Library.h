@@ -55,7 +55,7 @@ class OpenLog{
     //myLogger.println("send this"); it gets chopped up and sent over I2C instead of Serial
     virtual size_t writeCharacter(uint8_t character);
     int writeString(char *myString);
-    bool syncFile(void);
+    void syncFile(void);
 
     //By default use the default I2C addres, and use Wire port
     void begin();

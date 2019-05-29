@@ -48,11 +48,20 @@ namespace gatorLog {
 	}
 	
 	//%
-	void appendStringToFile(String value)
+	void openFile(String value)
 	{
 		const char * temp = PXT_STRING_DATA(value);
 
 		log->append((char *)temp);
+	}
+	
+	//%
+	void writeStringData(String value)
+	{
+		const char * temp = PXT_STRING_DATA(value);
+
+		log->writeString((char *)temp);
+		log->syncFile();
 	}
 	
 	//%
