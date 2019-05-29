@@ -46,4 +46,69 @@ namespace gatorLog {
 
 		log->create((char *)temp);
 	}
+	
+	//%
+	void appendStringToFile(String value)
+	{
+		const char * temp = PXT_STRING_DATA(value);
+
+		log->append((char *)temp);
+	}
+	
+	//%
+	void mkDirectory(String value)
+	{
+		const char * temp = PXT_STRING_DATA(value);
+
+		log->makeDirectory((char *)temp);
+	}
+	
+	//%
+	void chDirectory(String value)
+	{
+		const char * temp = PXT_STRING_DATA(value);
+
+		log->changeDirectory((char *)temp);
+	}
+	
+	//%
+	int32_t sizeOfFile(String value)
+	{
+		const char * temp = PXT_STRING_DATA(value);
+
+		return log->size((char *)temp);
+	}
+	
+	//%
+	bool search(String value)
+	{
+		const char * temp = PXT_STRING_DATA(value);
+
+		return log->searchDirectory((char *)temp);
+	}
+	
+	//%
+	String getNextItem()
+	{
+		String temp;
+
+		log->getNextDirectoryItem((uint8_t *)temp);
+		return temp;
+	}
+	
+	//%
+	void removeItem(String value)
+	{
+		const char * temp = PXT_STRING_DATA(value);
+
+		log->removeFile((char *)temp);
+	}
+	
+	//%
+	void removeDir(String value)
+	{
+		const char * temp = PXT_STRING_DATA(value);
+
+		log->removeDirectory((char *)temp);
+	}
 }

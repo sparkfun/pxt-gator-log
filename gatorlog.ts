@@ -36,4 +36,76 @@ namespace gatorLog {
 	export function createFile(value: string){
 		return
 	}
+	
+	//% weight=30
+	//% blockId="gatorLog_appendStringToFile"
+	//% block="Write string %value | to current file"
+	//% shim=gatorLog::appendStringToFile
+	export function appendStringToFile(value: string){
+		return
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_appendNumberToFile"
+	//% block="Write string %value | to current file"
+	export function appendNumberToFile(value: number){
+		appendStringToFile(value.toString())
+		return
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_mkDirectory"
+	//% block="Create directory with name %value""
+	//% shim=gatorLog::mkDirectory
+	export function mkDirectory(value: string){
+		return
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_chDirectory"
+	//% block="Change to %value | directory"
+	//% shim=gatorLog::chDirectory
+	export function chDirectory(value: string){
+		return
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_sizeOFile"
+	//% block="Get size of file with name %value"
+	//% shim=gatorLog::sizeOfFile
+	export function sizeOfFile(value: string){
+		return
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_search"
+	//% block="Search current directory for %value"
+	//% shim=gatorLog::search
+	export function search(value: string): boolean{
+		return search(value);
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_getNextItem"
+	//% block="Write string %value" to current file"
+	//% shim=gatorLog::getNextItem
+	export function getNextItem(): string{
+		return getNextItem();
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_removeItem"
+	//% block="Remove file %value"
+	//% shim=gatorLog::removeItem
+	export function removeItem(value: string){
+		return
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_removeDir"
+	//% block="Remove directory %value | and it's contents"
+	//% shim=gatorDir::removeDir
+	export function removeDir(value: string){
+		return
+	}
 }

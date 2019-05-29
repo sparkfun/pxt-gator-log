@@ -125,11 +125,6 @@ void OpenLog::create(char *fileName)
   //Upon completion a new file is created but OpenLog is still recording to original file
 }
 
-void OpenLog::check(uint8_t value)
-{ 
-	uBit.i2c.writeRegister(SLAVE_ADDRESS, LOG_CREATE_FILE, value);
-}
-
 //Given a directory name, create it in whatever directory we are currently in
 void OpenLog::makeDirectory(char *directoryName)
 {
@@ -162,7 +157,7 @@ int32_t OpenLog::size(char *fileName)
 }
 
 //Read the contents of a file, up to the size of the buffer, into a given array, from a given spot
-void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, char *fileName)
+void OpenLog::read(uint8_t* userBuffer, uint16_t bufferSize, char fileName[])
 {
   uint16_t spotInBuffer = 0;
   uint16_t leftToRead = bufferSize; //Read up to the size of our buffer. We may go past EOF.
