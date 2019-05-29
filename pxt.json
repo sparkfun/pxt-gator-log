@@ -1,6 +1,6 @@
 {
     "name": "gatorlog",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "SparkFun gator:Log data logger and RTC",
     "license": "MIT",
     "dependencies": {
