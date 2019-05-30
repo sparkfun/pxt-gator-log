@@ -276,14 +276,15 @@ uint32_t OpenLog::remove(char *thingToDelete, bool removeEverything)
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
 void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 {
-	char temp[strlen(option1) + 1];
+	char temp[strlen(option1) + 2];
 	temp[0] = registerNumber;
+	temp[strlen(option1) + 1] = 0x13;
 	for (uint8_t position = 0; position < strlen(option1); position++)
 	{
 		temp[position + 1] = option1[position];
 	}
 	//temp[1] = option1[0];
-	uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
+	uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 2);
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
@@ -316,6 +317,7 @@ int OpenLog::writeString(char *myString) {
   //_i2cPort->write(registerMap.writeFile);
   char temp[I2C_BUFFER_LENGTH];
   temp[0] = LOG_WRITE_FILE;
+  temp[strlen(myString) + 1] = 0x13;
   for (uint8_t position = 0; position < strlen(myString); position++)
   {
   	temp[position + 1] = myString[position];
@@ -330,7 +332,7 @@ int OpenLog::writeString(char *myString) {
   if (strlen(myString) > 0)
   {
     //_i2cPort->print(" "); //Include space
-    uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
+    uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 2);
   }
 
   return (1);
