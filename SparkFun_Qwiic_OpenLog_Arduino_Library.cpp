@@ -307,7 +307,7 @@ int OpenLog::writeString(char *myString) {
   //_i2cPort->write(registerMap.writeFile);
   char temp[I2C_BUFFER_LENGTH];
   temp[0] = LOG_WRITE_FILE;
-  temp[strlen(myString) + 1] = 0x00;
+  temp[strlen(myString) + 1] = 0x0D;
   for (uint8_t position = 0; position < strlen(myString); position++)
   {
   	temp[position + 1] = myString[position];
