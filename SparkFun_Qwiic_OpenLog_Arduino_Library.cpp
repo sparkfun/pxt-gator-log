@@ -330,7 +330,7 @@ int OpenLog::writeString(char *myString) {
   if (strlen(myString) > 0)
   {
     //_i2cPort->print(" "); //Include space
-    uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(myString));
+    uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
   }
 
   return (1);
