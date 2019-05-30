@@ -1,7 +1,6 @@
 /**
 * Andy England @ SparkFun Electronics
 * September 6, 2018
-
 * Development environment specifics:
 * Written in Microsoft Makecode
 * Tested with a SparkFun gatorlog sensor and micro:bit

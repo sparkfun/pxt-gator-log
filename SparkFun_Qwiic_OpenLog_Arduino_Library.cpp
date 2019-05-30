@@ -3,24 +3,17 @@
   SparkFun sells these at its website: www.sparkfun.com
   Do you like this library? Help support SparkFun. Buy a board!
   https://www.sparkfun.com/products/14641
-
   Written by Nathan Seidle @ SparkFun Electronics, February 2nd, 2018
-
   Qwiic OpenLog makes it very easy to record data over I2C to a microSD.
-
   This library handles the initialization of the Qwiic OpenLog and the calculations
   to get the temperatures.
-
   https://github.com/sparkfun/SparkFun_Qwiic_OpenLog_Arduino_Library
-
   Development environment specifics:
   Arduino IDE 1.8.3
-
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -209,7 +202,6 @@ void OpenLog::getNextDirectoryItem(uint8_t* userBuffer)
   /*while (_i2cPort->available())
   {
     uint8_t incoming = _i2cPort->read();
-
     if (incoming == '\0')
       return (itemName); //This is the end of the file name. We don't need to read any more of the 32 uint8_ts
     else if (charsReceived == 0 && incoming == 0xFF)
@@ -219,7 +211,6 @@ void OpenLog::getNextDirectoryItem(uint8_t* userBuffer)
     }
     else
       itemName += (char)incoming; //Add this uint8_t to the file name
-
     charsReceived++;
   }*/
   /*char itemNameArray[itemName.size()];
@@ -276,7 +267,7 @@ uint32_t OpenLog::remove(char *thingToDelete, bool removeEverything)
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
 void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 {
-	char temp[strlen(option1) + 1];
+	char temp[strlen(option1) + 2];
 	temp[0] = registerNumber;
 	temp[strlen(option1) + 1] = 0x00;
 	for (uint8_t position = 0; position < strlen(option1); position++)

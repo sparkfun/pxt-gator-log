@@ -3,24 +3,17 @@
   SparkFun sells these at its website: www.sparkfun.com
   Do you like this library? Help support SparkFun. Buy a board!
   https://www.sparkfun.com/products/14641
-
   Written by Nathan Seidle @ SparkFun Electronics, February 2nd, 2018
-
   Qwiic OpenLog makes it very easy to record data over I2C to a microSD.
-
   This library handles the initialization of the Qwiic OpenLog and the calculations
   to get the temperatures.
-
   https://github.com/sparkfun/SparkFun_Qwiic_OpenLog_Arduino_Library
-
   Development environment specifics:
   Arduino IDE 1.8.3
-
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
   GNU General Public License for more details.
-
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
