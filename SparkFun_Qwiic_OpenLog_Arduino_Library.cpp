@@ -337,12 +337,6 @@ int OpenLog::writeString(char *myString) {
 }
 
 void OpenLog::syncFile(){
-  uBit.i2c.write(SLAVE_ADDRESS, (char *)LOG_SYNC_FILE, 1);
-  /*_i2cPort->beginTransmission(SLAVE_ADDRESS);
-  _i2cPort->write(registerMap.syncFile);
-  
-  if (_i2cPort->endTransmission() != 0){
-    return (0);    
-  }
-  */
+  char temp[1] = {LOG_SYNC_FILE};
+  uBit.i2c.write(SLAVE_ADDRESS, temp, 1);
 }
