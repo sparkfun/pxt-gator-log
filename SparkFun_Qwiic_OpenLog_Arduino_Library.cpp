@@ -274,7 +274,7 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 		temp[position + 1] = option1[position];
 	}
 	//temp[1] = option1[0];
-	uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1, true);
+	uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
@@ -322,7 +322,7 @@ int OpenLog::writeString(char *myString) {
   if (strlen(myString) > 0)
   {
     //_i2cPort->print(" "); //Include space
-    uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1, true);
+    uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
   }
 
   return (1);
