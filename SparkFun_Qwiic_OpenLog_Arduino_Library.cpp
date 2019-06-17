@@ -26,7 +26,7 @@
 
 static MicroBitI2C i2c(I2C_SDA0, I2C_SCL0);
 
-char SLAVE_ADDRESS =   0x2A;
+char SLAVE_ADDRESS =   0x54;
 
 static const char LOG_ID = 			0x00;
 static const char LOG_STATUS = 		0x01;
