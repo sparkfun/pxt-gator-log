@@ -45,7 +45,7 @@ namespace gatorLog {
 		const char * temp = PXT_STRING_DATA(value);
 
 		log->create((char *)temp);
-		log->syncFile();
+		//log->syncFile();
 	}
 	
 	//%
@@ -54,7 +54,7 @@ namespace gatorLog {
 		const char * temp = PXT_STRING_DATA(value);
 
 		log->append((char *)temp);
-		log->syncFile();
+		//log->syncFile();
 	}
 	
 	//%
