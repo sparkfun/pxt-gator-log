@@ -325,7 +325,7 @@ int OpenLog::writeString(char *myString) {
     //_i2cPort->print(" "); //Include space
     i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
   }
-  //fiber_sleep(1);
+  fiber_sleep(6);//Let us handle the string we just wrote
 
   return (1);
 }
