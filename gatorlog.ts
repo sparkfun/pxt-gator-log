@@ -22,7 +22,7 @@ namespace gatorLog {
 	
 	//% weight=31 
 	//% blockId="gatorLog_begin" 
-	//% block="Initialize gator:log"
+	//% block="initialize gator:log"
 	//% shim=gatorLog::begin
 	export function begin(){
 		return
@@ -30,7 +30,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_createFile"
-	//% block="Create file named %value"
+	//% block="create file named %value"
 	//% shim=gatorLog::createFile
 	export function createFile(value: string){
 		return
@@ -38,7 +38,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_openFile"
-	//% block="Open file %value"
+	//% block="open file %value"
 	//% shim=gatorLog::openFile
 	export function openFile(value: string){
 		return
@@ -46,7 +46,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_writeStringData"
-	//% block="Write string %value | to current file"
+	//% block="write string %value | to current file"
 	//% shim=gatorLog::writeStringData
 	export function writeStringData(value: string){
 		return
@@ -54,7 +54,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_writeNumberData"
-	//% block="Write number %value | to current file"
+	//% block="write number %value | to current file"
 	export function writeNumberData(value: number){
 		writeStringData(value.toString())
 		return
@@ -62,7 +62,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_mkDirectory"
-	//% block="Create directory with name %value""
+	//% block="create directory with name %value""
 	//% shim=gatorLog::mkDirectory
 	export function mkDirectory(value: string){
 		return
@@ -70,7 +70,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_chDirectory"
-	//% block="Change to %value | directory"
+	//% block="change to %value | directory"
 	//% shim=gatorLog::chDirectory
 	export function chDirectory(value: string){
 		return
@@ -78,7 +78,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_sizeOFile"
-	//% block="Get size of file with name %value"
+	//% block="get size of file with name %value"
 	//% shim=gatorLog::sizeOfFile
 	export function sizeOfFile(value: string): number{
 		return 0
@@ -86,7 +86,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_search"
-	//% block="Search current directory for %value"
+	//% block="search current directory for %value"
 	//% shim=gatorLog::search
 	export function search(value: string): boolean{
 		return true;
@@ -94,7 +94,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_getNextItem"
-	//% block="Get name of next item"
+	//% block="get name of next item"
 	//% shim=gatorLog::getNextItem
 	export function getNextItem(): string{
 		return "item";
@@ -102,7 +102,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_removeItem"
-	//% block="Remove file %value"
+	//% block="remove file %value"
 	//% shim=gatorLog::removeItem
 	export function removeItem(value: string){
 		return
@@ -110,7 +110,7 @@ namespace gatorLog {
 	
 	//% weight=30
 	//% blockId="gatorLog_removeDir"
-	//% block="Remove directory %value | and it's contents"
+	//% block="remove directory %value | and it's contents"
 	//% shim=gatorDir::removeDir
 	export function removeDir(value: string){
 		return
