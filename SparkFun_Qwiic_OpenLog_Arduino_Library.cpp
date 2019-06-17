@@ -325,7 +325,7 @@ int OpenLog::writeString(char *myString) {
     //_i2cPort->print(" "); //Include space
     i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
   }
-  fiber_sleep(5);
+  //fiber_sleep(5);
 
   return (1);
 }
@@ -333,5 +333,5 @@ int OpenLog::writeString(char *myString) {
 void OpenLog::syncFile(){
   char temp[1] = {LOG_SYNC_FILE};
   i2c.write(SLAVE_ADDRESS, temp, 1);
-  //fiber_sleep(5);
+  fiber_sleep(1);
 }
