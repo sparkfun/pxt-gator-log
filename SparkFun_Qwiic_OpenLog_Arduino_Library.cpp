@@ -24,9 +24,9 @@
 #include "ManagedString.h"
 #include <vector>
 
-MicroBit uBit;
+static MicroBitI2C i2c(I2C_SDA0, I2C_SCL0);
 
-char SLAVE_ADDRESS =   0x54;
+char SLAVE_ADDRESS =   0x2A;
 
 static const char LOG_ID = 			0x00;
 static const char LOG_STATUS = 		0x01;
@@ -196,7 +196,7 @@ void OpenLog::getNextDirectoryItem(uint8_t* userBuffer)
   //uint8_t charsReceived = 0;
   while (tempData != '\0')
   {
-	uBit.i2c.read(SLAVE_ADDRESS, &tempData, 1, true);
+	i2c.read(SLAVE_ADDRESS, &tempData, 1, true);
 	userBuffer[position++] = tempData;
   }
   /*while (_i2cPort->available())
@@ -246,12 +246,12 @@ uint32_t OpenLog::remove(char *thingToDelete, bool removeEverything)
   if(removeEverything == true)
   {
 	sendCommand(LOG_RMRF, thingToDelete); //-rf causes any directory to remove contents as well
-    uBit.i2c.read(SLAVE_ADDRESS, data, 4);
+    i2c.read(SLAVE_ADDRESS, data, 4);
   }
   else
   {
 	sendCommand(LOG_RM, thingToDelete); //Just delete a thing
-    uBit.i2c.read(SLAVE_ADDRESS, data, 4);
+    i2c.read(SLAVE_ADDRESS, data, 4);
   }
   //Upon completion Qwiic OpenLog will have 4 uint8_ts ready to read, representing the number of files beleted
 
@@ -274,8 +274,8 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 		temp[position + 1] = option1[position];
 	}
 	//temp[1] = option1[0];
-	uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
-    uBit.sleep(1);
+	i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
+    fiber_sleep(1);
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
@@ -289,17 +289,17 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 
 uint8_t OpenLog::readRegister(uint8_t address, uint8_t offset)
 {
-	return uBit.i2c.readRegister(address, offset);
+	return i2c.readRegister(address, offset);
 }
 
 void OpenLog::readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8_t offset, uint8_t length)
 {
-	uBit.i2c.readRegister(address, offset, outputPointer, length);	
+	i2c.readRegister(address, offset, outputPointer, length);	
 }
 
 //Write a single character to Qwiic OpenLog
 size_t OpenLog::writeCharacter(uint8_t character) {
-  uBit.i2c.writeRegister(SLAVE_ADDRESS, LOG_WRITE_FILE, character);
+  i2c.writeRegister(SLAVE_ADDRESS, LOG_WRITE_FILE, character);
   return (1);
 }
 
@@ -323,15 +323,15 @@ int OpenLog::writeString(char *myString) {
   if (strlen(myString) > 0)
   {
     //_i2cPort->print(" "); //Include space
-    uBit.i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
+    i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
   }
-  uBit.sleep(1);
+  fiber_sleep(1);
 
   return (1);
 }
 
 void OpenLog::syncFile(){
   char temp[1] = {LOG_SYNC_FILE};
-  uBit.i2c.write(SLAVE_ADDRESS, temp, 1);
-  uBit.sleep(1);
+  i2c.write(SLAVE_ADDRESS, temp, 1);
+  fiber_sleep(1);
 }
