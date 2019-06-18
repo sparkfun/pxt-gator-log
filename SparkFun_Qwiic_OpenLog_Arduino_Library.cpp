@@ -275,7 +275,6 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 	}
 	//temp[1] = option1[0];
 	i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
-    fiber_sleep(1);
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
@@ -300,7 +299,6 @@ void OpenLog::readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8
 //Write a single character to Qwiic OpenLog
 void OpenLog::writeCharacter(uint8_t character) {
   i2c.writeRegister(SLAVE_ADDRESS, LOG_WRITE_FILE, character);  
-  fiber_sleep(1);
 }
 
 void OpenLog::writeString(char *myString) {
@@ -334,5 +332,4 @@ void OpenLog::writeString(char *myString) {
 void OpenLog::syncFile(){
   char temp[1] = {LOG_SYNC_FILE};
   i2c.write(SLAVE_ADDRESS, temp, 1);
-  fiber_sleep(1);
 }
