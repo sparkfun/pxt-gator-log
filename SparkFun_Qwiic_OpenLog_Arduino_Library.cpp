@@ -275,7 +275,7 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 	}
 	//temp[1] = option1[0];
 	i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
-    fiber_sleep(5);
+    fiber_sleep(1);
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
@@ -306,6 +306,8 @@ size_t OpenLog::writeCharacter(uint8_t character) {
 int OpenLog::writeString(char *myString) {
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerMap.writeFile);
+  
+  
   char temp[I2C_BUFFER_LENGTH];
   temp[0] = LOG_WRITE_FILE;
   //temp[strlen(myString) + 1] = 0x0D;
@@ -325,7 +327,7 @@ int OpenLog::writeString(char *myString) {
     //_i2cPort->print(" "); //Include space
     i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
   }
-  //fiber_sleep(5);
+  fiber_sleep(6);
 
   return (1);
 }
@@ -333,5 +335,5 @@ int OpenLog::writeString(char *myString) {
 void OpenLog::syncFile(){
   char temp[1] = {LOG_SYNC_FILE};
   i2c.write(SLAVE_ADDRESS, temp, 1);
-  //fiber_sleep(1);
+  fiber_sleep(1);
 }
