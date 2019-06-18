@@ -46,8 +46,8 @@ class OpenLog{
   public:
     //These functions override the built-in print functions so that when the user does an 
     //myLogger.println("send this"); it gets chopped up and sent over I2C instead of Serial
-    virtual size_t writeCharacter(uint8_t character);
-    int writeString(char *myString);
+    void writeCharacter(uint8_t character);
+    void writeString(char *myString);
     void syncFile(void);
 
     //By default use the default I2C addres, and use Wire port

@@ -298,27 +298,27 @@ void OpenLog::readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8
 }
 
 //Write a single character to Qwiic OpenLog
-size_t OpenLog::writeCharacter(uint8_t character) {
+void OpenLog::writeCharacter(uint8_t character) {
   i2c.writeRegister(SLAVE_ADDRESS, LOG_WRITE_FILE, character);
-  return (1);
 }
 
-int OpenLog::writeString(char *myString) {
+void OpenLog::writeString(char *myString) {
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerMap.writeFile);
   
   
-  char temp[I2C_BUFFER_LENGTH];
-  temp[0] = LOG_WRITE_FILE;
+  //char temp[I2C_BUFFER_LENGTH];
+  //temp[0] = LOG_WRITE_FILE;
   //temp[strlen(myString) + 1] = 0x0D;
   for (uint8_t position = 0; position < strlen(myString); position++)
   {
-  	temp[position + 1] = myString[position];
+  	//temp[position + 1] = myString[position];
+	writeCharacter(myString[position]);
   }
   //remember, the rx buffer on the i2c openlog is 32 uint8_ts
   //and the register address takes up 1 uint8_t so we can only
   //send 31 data uint8_ts at a time
-  if(strlen(myString) > 31)
+  /*if(strlen(myString) > 31)
   {
     return -1;
   }
@@ -327,9 +327,7 @@ int OpenLog::writeString(char *myString) {
     //_i2cPort->print(" "); //Include space
     i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
   }
-  fiber_sleep(6);
-
-  return (1);
+  fiber_sleep(1);*/
 }
 
 void OpenLog::syncFile(){
