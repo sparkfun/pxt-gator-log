@@ -275,7 +275,7 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 	}
 	//temp[1] = option1[0];
 	i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
-	fiber_sleep(10);
+	fiber_sleep(10);//Allow actions to be taken on the SD card
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
@@ -300,7 +300,7 @@ void OpenLog::readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8
 //Write a single character to Qwiic OpenLog
 void OpenLog::writeCharacter(uint8_t character) {
   i2c.writeRegister(SLAVE_ADDRESS, LOG_WRITE_FILE, character);  
-  fiber_sleep(10);
+  //fiber_sleep(10);
 }
 
 void OpenLog::writeString(char *myString) {
@@ -308,13 +308,13 @@ void OpenLog::writeString(char *myString) {
   //_i2cPort->write(registerMap.writeFile);
   
   
-  //char temp[I2C_BUFFER_LENGTH];
-  //temp[0] = LOG_WRITE_FILE;
+  char temp[I2C_BUFFER_LENGTH];
+  temp[0] = LOG_WRITE_FILE;
   //temp[strlen(myString) + 1] = 0x0D;
   for (uint8_t position = 0; position < strlen(myString); position++)
   {
-  	//temp[position + 1] = myString[position];
-	writeCharacter(myString[position]);
+  	temp[position + 1] = myString[position];
+	//writeCharacter(myString[position]);
   }
   //remember, the rx buffer on the i2c openlog is 32 uint8_ts
   //and the register address takes up 1 uint8_t so we can only
@@ -324,14 +324,14 @@ void OpenLog::writeString(char *myString) {
     return -1;
   }
   if (strlen(myString) > 0)
-  {
+  {*/
     //_i2cPort->print(" "); //Include space
     i2c.write(SLAVE_ADDRESS, temp, strlen(myString) + 1);
-  }
-  fiber_sleep(1);*/
+  //}
 }
 
 void OpenLog::syncFile(){
   char temp[1] = {LOG_SYNC_FILE};
   i2c.write(SLAVE_ADDRESS, temp, 1);
+  fiber_sleep(50);//Allow the SD card to be written
 }
