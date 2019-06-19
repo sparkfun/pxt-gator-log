@@ -63,7 +63,7 @@ namespace gatorLog {
 		const char * temp = PXT_STRING_DATA(value);
 
 		log->writeString((char *)temp);
-		log->syncFile();
+		//log->syncFile();
 	}
 	
 	//%
