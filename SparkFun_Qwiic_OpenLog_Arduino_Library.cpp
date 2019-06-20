@@ -319,7 +319,7 @@ void OpenLog::writeString(char *myString) {
   for (uint8_t position = 0; position < strlen(myString) + 1; position++)
   {
   	//temp[position] = myString[position];
-	writeCharacter(myString[position]);
+	writeCharacter(temp[position]);
   }
   //fiber_sleep(50);//Allow SD card write
   //remember, the rx buffer on the i2c openlog is 32 uint8_ts
