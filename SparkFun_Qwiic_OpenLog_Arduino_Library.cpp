@@ -275,7 +275,7 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 	}
 	//temp[1] = option1[0];
 	i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
-	fiber_sleep(10);//Allow actions to be taken on the SD card
+	fiber_sleep(150);//Allow actions to be taken on the SD card
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
@@ -334,5 +334,5 @@ void OpenLog::writeString(char *myString) {
 void OpenLog::syncFile(){
   char temp[1] = {LOG_SYNC_FILE};
   i2c.write(SLAVE_ADDRESS, temp, 1);
-  fiber_sleep(50);//Allow the SD card to be written
+  fiber_sleep(150);//Allow the SD card to be written
 }
