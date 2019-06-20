@@ -308,12 +308,17 @@ void OpenLog::writeString(char *myString) {
   //_i2cPort->write(registerMap.writeFile);
   
   
-  //char temp[I2C_BUFFER_LENGTH];
+  char temp[I2C_BUFFER_LENGTH];
   //temp[0] = LOG_WRITE_FILE;
-  //temp[strlen(myString) + 1] = 0x0D;
+  temp[strlen(myString) + 1] = 0x0D;
   for (uint8_t position = 0; position < strlen(myString); position++)
   {
-  	//temp[position + 1] = myString[position];
+  	temp[position] = myString[position];
+	//writeCharacter(myString[position]);
+  }
+  for (uint8_t position = 0; position < strlen(myString) + 1; position++)
+  {
+  	//temp[position] = myString[position];
 	writeCharacter(myString[position]);
   }
   //fiber_sleep(50);//Allow SD card write
