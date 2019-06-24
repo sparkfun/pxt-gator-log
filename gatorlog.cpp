@@ -37,6 +37,7 @@ namespace gatorLog {
 	void begin()
 	{
 		log->begin();
+		log->setToCompilerTime();
 	}
 	
 	//%
@@ -121,5 +122,12 @@ namespace gatorLog {
 		const char * temp = PXT_STRING_DATA(value);
 
 		log->removeDirectory((char *)temp);
+	}
+	
+	//%
+	String getTime()
+	{
+		log->updateTime();
+		return (String)log->stringTime();
 	}
 }

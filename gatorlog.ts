@@ -111,8 +111,16 @@ namespace gatorLog {
 	//% weight=30
 	//% blockId="gatorLog_removeDir"
 	//% block="remove directory %value | and it's contents"
-	//% shim=gatorDir::removeDir
+	//% shim=gatorLog::removeDir
 	export function removeDir(value: string){
 		return
+	}
+	
+	//% weight=30
+	//% blockId="gatorLog_getTimeString"
+	//% block="get time"
+	//% shim=gatorLog::getTime
+	export function getTimeString(): string{
+		return "item";
 	}
 }
