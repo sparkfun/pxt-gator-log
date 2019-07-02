@@ -284,7 +284,7 @@ void OpenLog::waitForCommandReady( void ){
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
 void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 {
-	waitForCommandReady();
+	//waitForCommandReady();
 	char temp[strlen(option1) + 1];
 	temp[0] = registerNumber;
 	for (uint8_t position = 0; position < strlen(option1); position++)
@@ -307,19 +307,19 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 
 uint8_t OpenLog::readRegister(uint8_t address, uint8_t offset)
 {
-	waitForCommandReady();
+	//waitForCommandReady();
 	return i2c.readRegister(address, offset);
 }
 
 void OpenLog::readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8_t offset, uint8_t length)
 {
-	waitForCommandReady();
+	//waitForCommandReady();
 	i2c.readRegister(address, offset, outputPointer, length);	
 }
 
 //Write a single character to Qwiic OpenLog
 void OpenLog::writeCharacter(uint8_t character) {
-  waitForCommandReady();
+  //waitForCommandReady();
   i2c.writeRegister(SLAVE_ADDRESS, LOG_WRITE_FILE, character);  
   //fiber_sleep(200);
 }
