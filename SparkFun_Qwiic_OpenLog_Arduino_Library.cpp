@@ -46,6 +46,8 @@ static const char LOG_LIST =		0x0E;
 static const char LOG_RM =			0x0F;
 static const char LOG_RMRF =		0x10;
 static const char LOG_SYNC_FILE =	0x11;
+static const char LOG_CMD_RDY = 	0x12;
+static const char LOG_CNT_READ = 	0x13;
 
 static const char I2C_BUFFER_LENGTH = 32;
 
@@ -264,9 +266,25 @@ uint32_t OpenLog::remove(char *thingToDelete, bool removeEverything)
   //Qwiic OpenLog will continue logging whatever it next receives to the current open log
 }
 
+void OpenLog::waitForCommandReady( void ){
+  bool QOLready = false;
+  while(!QOLready){   // Poll the QOL to see if it can accept a new command
+    
+
+
+    // Check the state of the cmdready register
+    QOLready = readRegister(SLAVE_ADDRESS, LOG_CMD_RDY);
+
+    if(!QOLready){
+      fiber_sleep(5); // give QOL time to work in between requests (in case not done yet) (try tweaking this # if you don't like it)
+    } // otherwise fall straight through
+  }
+}
+
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
 void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 {
+	waitForCommandReady();
 	char temp[strlen(option1) + 1];
 	temp[0] = registerNumber;
 	for (uint8_t position = 0; position < strlen(option1); position++)
@@ -275,7 +293,7 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 	}
 	//temp[1] = option1[0];
 	i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
-	fiber_sleep(150);//Allow actions to be taken on the SD card
+	//fiber_sleep(150);//Allow actions to be taken on the SD card
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerNumber);
   /*if (option1.length() > 0)
@@ -289,16 +307,19 @@ void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 
 uint8_t OpenLog::readRegister(uint8_t address, uint8_t offset)
 {
+	waitForCommandReady();
 	return i2c.readRegister(address, offset);
 }
 
 void OpenLog::readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8_t offset, uint8_t length)
 {
+	waitForCommandReady();
 	i2c.readRegister(address, offset, outputPointer, length);	
 }
 
 //Write a single character to Qwiic OpenLog
 void OpenLog::writeCharacter(uint8_t character) {
+  waitForCommandReady();
   i2c.writeRegister(SLAVE_ADDRESS, LOG_WRITE_FILE, character);  
   //fiber_sleep(200);
 }
@@ -339,5 +360,5 @@ void OpenLog::writeString(char *myString) {
 void OpenLog::syncFile(){
   char temp[1] = {LOG_SYNC_FILE};
   i2c.write(SLAVE_ADDRESS, temp, 1);
-  fiber_sleep(150);//Allow the SD card to be written
+  //fiber_sleep(150);//Allow the SD card to be written
 }
