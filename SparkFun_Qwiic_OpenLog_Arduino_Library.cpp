@@ -284,7 +284,7 @@ void OpenLog::waitForCommandReady( void ){
 //Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
 void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
 {
-	//waitForCommandReady();
+	waitForCommandReady();
 	char temp[strlen(option1) + 1];
 	temp[0] = registerNumber;
 	for (uint8_t position = 0; position < strlen(option1); position++)
