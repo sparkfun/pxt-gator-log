@@ -37,7 +37,7 @@ namespace gatorLog {
 	void begin()
 	{
 		log->begin();
-		log->setToCompilerTime();
+		//log->setToCompilerTime();
 	}
 	
 	//%
