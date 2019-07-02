@@ -150,6 +150,8 @@ static const char LOG_LIST =		0x0E;
 static const char LOG_RM =			0x0F;
 static const char LOG_RMRF =		0x10;
 static const char LOG_SYNC_FILE =	0x11;
+static const char cmdready = 		0x12;
+static const char continueRead = 	0x13;
 
 static const char I2C_BUFFER_LENGTH = 32;
 
@@ -410,28 +412,7 @@ uint32_t OpenLog::remove(char *thingToDelete, bool removeEverything)
   //Qwiic OpenLog will continue logging whatever it next receives to the current open log
 }
 
-//Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
-void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
-{
-	char temp[strlen(option1) + 1];
-	temp[0] = registerNumber;
-	for (uint8_t position = 0; position < strlen(option1); position++)
-	{
-		temp[position + 1] = option1[position];
-	}
-	//temp[1] = option1[0];
-	i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
-	fiber_sleep(150);//Allow actions to be taken on the SD card
-  //_i2cPort->beginTransmission(SLAVE_ADDRESS);
-  //_i2cPort->write(registerNumber);
-  /*if (option1.length() > 0)
-  {
-    //_i2cPort->print(" "); //Include space
-    _i2cPort->print(option1);
-  }*/
- 
-  //Upon completion any new characters sent to OpenLog will be recorded to this file
-}
+
 
 //Configure RTC to output 1-12 hours
 //Converts any current hour setting to 12 hour
@@ -831,13 +812,53 @@ uint8_t OpenLog::DECtoBCD(uint8_t val)
 {
 	return ( ( val / 10 ) * 0x10 ) + ( val % 10 );
 }
+
+void OpenLog::waitForCommandReady( void ){
+  bool QOLready = false;
+  while(!QOLready){   // Poll the QOL to see if it can accept a new command
+
+    // Check the state of the cmdready register
+    QOLready = readRegister(SLAVE_ADDRESS, QOL_CMDREADY_COMMAND_REG);
+
+    if(!QOLready){
+      fiber_sleep(5); // give QOL time to work in between requests (in case not done yet) (try tweaking this # if you don't like it)
+    } // otherwise fall straight through
+  }
+}
+
+//Send a command to the unit with options (such as "append myfile.txt" or "read myfile.txt 10")
+void OpenLog::sendCommand(uint8_t registerNumber, char option1[])
+{
+	waitForCommandReady(); 
+	char temp[strlen(option1) + 1];
+	temp[0] = registerNumber;
+	for (uint8_t position = 0; position < strlen(option1); position++)
+	{
+		temp[position + 1] = option1[position];
+	}
+	//temp[1] = option1[0];
+	i2c.write(SLAVE_ADDRESS, temp, strlen(option1) + 1);
+	//fiber_sleep(150);//Allow actions to be taken on the SD card
+  //_i2cPort->beginTransmission(SLAVE_ADDRESS);
+  //_i2cPort->write(registerNumber);
+  /*if (option1.length() > 0)
+  {
+    //_i2cPort->print(" "); //Include space
+    _i2cPort->print(option1);
+  }*/
+ 
+  //Upon completion any new characters sent to OpenLog will be recorded to this file
+}
+
 uint8_t OpenLog::readRegister(uint8_t address, uint8_t offset)
 {
+	waitForCommandReady();
 	return i2c.readRegister(address, offset);
 }
 
 void OpenLog::readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8_t offset, uint8_t length)
 {
+	waitForCommandReady();
 	i2c.readRegister(address, offset, outputPointer, length);	
 }
 
@@ -849,16 +870,19 @@ void OpenLog::writeMultipleRegisters(uint8_t addr, uint8_t regNum, uint8_t * val
 	{
 		temp[position + 1] = values[position];
 	}
+	waitForCommandReady();
 	i2c.write(addr, temp, len + 1);
 }
 
 void OpenLog::writeRegister(uint8_t address, uint8_t regNum, uint8_t val)
 {
+	waitForCommandReady();
 	i2c.writeRegister(address, regNum, val);
 }
 
 //Write a single character to Qwiic OpenLog
 void OpenLog::writeCharacter(uint8_t character) {
+	waitForCommandReady();
   i2c.writeRegister(SLAVE_ADDRESS, LOG_WRITE_FILE, character);  
   //fiber_sleep(200);
 }
@@ -867,7 +891,7 @@ void OpenLog::writeString(char *myString) {
   //_i2cPort->beginTransmission(SLAVE_ADDRESS);
   //_i2cPort->write(registerMap.writeFile);
   
-  
+  waitForCommandReady();
   char temp[I2C_BUFFER_LENGTH];
   //temp[0] = LOG_WRITE_FILE;
   temp[strlen(myString) + 1] = 0x0D;

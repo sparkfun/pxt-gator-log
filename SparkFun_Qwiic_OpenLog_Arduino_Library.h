@@ -25,6 +25,11 @@
 #include "MicroBit.h"
 #include "ManagedString.h"
 
+
+#define QOL_CMDREADY_COMMAND_REG  (0x12)
+#define QOL_CONTINUEREADFILE_COMMAND_REG  (0x13)
+
+
 //Bits found in the getStatus() uint8_t
 #define STATUS_SD_INIT_GOOD 0
 #define STATUS_LAST_COMMAND_SUCCESS 1
@@ -139,9 +144,11 @@ class OpenLog{
 	void reset(void); //Fully reset RTC to all zeroes
     //These are the core functions that send a command to OpenLog
     void sendCommand(uint8_t registerNumber, char option1[]);
+    void waitForCommandReady( void );
 	uint8_t readRegister(uint8_t address, uint8_t offset);
     void readRegisterRegion(uint8_t address, uint8_t *outputPointer , uint8_t offset, uint8_t length);
-	
+ // Reads up to one full I2C buffer from the QOL - sends a command first with the register number and 
+
     void writeRegister(uint8_t addr, uint8_t regNum, uint8_t val);
 	void writeMultipleRegisters(uint8_t addr, uint8_t regNum, uint8_t * values, uint8_t len);
   private:
