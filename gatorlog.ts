@@ -15,7 +15,7 @@
 /**
  * Functions to operate the gatorlog sensor
  */
- 
+
 //% color=#f44242 icon="\uf185"
 namespace gatorLog {
     // Functions for reading Particle from the gatorlog in Particle or straight adv value
@@ -42,6 +42,14 @@ namespace gatorLog {
 		serial.readUntil(">")
 		serial.writeString("new " + value + String.fromCharCode(13))
 		serial.readUntil(">")
+		return
+	}
+	
+	//% weight=49
+	//% blockId="gatorLog_command"
+	//% block="create file named %value"
+	export function command(value: string){
+		serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
 		return
 	}
 	
@@ -119,7 +127,6 @@ namespace gatorLog {
 	//% weight=42
 	//% blockId="gatorLog_removeItem"
 	//% block="remove file %value"
-	//% shim=gatorLog::removeItem
 	export function removeItem(value: string){
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString(String.fromCharCode(26))
@@ -133,7 +140,6 @@ namespace gatorLog {
 	//% weight=41
 	//% blockId="gatorLog_removeDir"
 	//% block="remove directory %value | and it's contents"
-	//% shim=gatorLog::removeDir
 	export function removeDir(value: string){
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString(String.fromCharCode(26))
