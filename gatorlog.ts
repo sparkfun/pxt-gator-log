@@ -36,6 +36,20 @@ namespace gatorLog {
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString(String.fromCharCode(26))
+		serial.writeString("new ")
+		serial.writeString(value)
+		serial.writeString(String.fromCharCode(13))
+		basic.pause(10)
+		return
+	}
+	
+	//% weight=49
+	//% blockId="gatorLog_appendFile"
+	//% block="append to file named %value"
+	export function appendFile(value: string){
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
 		serial.writeString("append ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
