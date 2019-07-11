@@ -32,7 +32,10 @@ namespace gatorLog {
 	//% blockId="gatorLog_createFile"
 	//% block="create file named %value"
 	export function createFile(value: string){
-		serial.writeString(",,,new ")
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString("new ")
 		serial.writeString(value)
 		basic.pause(10)
 		return
@@ -43,7 +46,6 @@ namespace gatorLog {
 	//% block="write string %value | to current file"
 	export function writeStringData(value: string){
 		serial.writeString(value)
-		serial.writeString("\r")
 		basic.pause(10)
 		return
 	}
@@ -52,7 +54,10 @@ namespace gatorLog {
 	//% blockId="gatorLog_mkDirectory"
 	//% block="create directory with name %value""
 	export function mkDirectory(value: string){
-		serial.writeString(",,,md ")
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString("md ")
 		serial.writeString(value)
 		basic.pause(10)
 		return
@@ -62,7 +67,10 @@ namespace gatorLog {
 	//% blockId="gatorLog_chDirectory"
 	//% block="change to %value | directory"
 	export function chDirectory(value: string){
-		serial.writeString(",,,cd ")
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString("cd ")
 		serial.writeString(value)
 		return
 	}
@@ -71,7 +79,10 @@ namespace gatorLog {
 	//% blockId="gatorLog_sizeOfFile"
 	//% block="get size of file with name %value"
 	export function sizeOfFile(value: string): string{
-		serial.writeString(",,,size ")
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString("size ")
 		serial.writeString(value)
 		return serial.readString()
 	}
@@ -80,7 +91,10 @@ namespace gatorLog {
 	//% blockId="gatorLog_readFile"
 	//% block="get size of file with name %value"
 	export function readFile(value: string): string{
-		serial.writeString(",,,size ")
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString("size ")
 		serial.writeString(value)
 		return serial.readString()
 	}
@@ -90,7 +104,10 @@ namespace gatorLog {
 	//% block="remove file %value"
 	//% shim=gatorLog::removeItem
 	export function removeItem(value: string){
-		serial.writeString(",,,rm ")
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString("rm ")
 		serial.writeString(value)
 		return
 	}
@@ -100,8 +117,11 @@ namespace gatorLog {
 	//% block="remove directory %value | and it's contents"
 	//% shim=gatorLog::removeDir
 	export function removeDir(value: string){
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26))
+		serial.writeString("rm -rf ")
 		serial.writeString(value)
-		serial.writeString(",,,rm -rf ")
 		return
 	}
 }
