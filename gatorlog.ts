@@ -25,7 +25,7 @@ namespace gatorLog {
 	//% block="initialize gator:log"
 	export function begin(){
 		serial.redirect(SerialPin.P15, SerialPin.P14, BaudRate.BaudRate9600)
-		basic.pause(750)
+		basic.pause(1500)
 		return
 	}
 	
@@ -39,7 +39,7 @@ namespace gatorLog {
 		serial.writeString("new ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
-		basic.pause(100)
+		basic.pause(10)
 		return
 	}
 	
@@ -53,7 +53,7 @@ namespace gatorLog {
 		serial.writeString("append ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
-		basic.pause(100)
+		basic.pause(10)
 		return
 	}
 	
@@ -64,7 +64,7 @@ namespace gatorLog {
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
 		serial.writeString(String.fromCharCode(10))
-		basic.pause(100)
+		basic.pause(10)
 		return
 	}
 	
