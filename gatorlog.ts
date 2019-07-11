@@ -39,7 +39,7 @@ namespace gatorLog {
 		serial.writeString("new ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
-		basic.pause(10)
+		basic.pause(100)
 		return
 	}
 	
@@ -53,7 +53,7 @@ namespace gatorLog {
 		serial.writeString("append ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
-		basic.pause(10)
+		basic.pause(100)
 		return
 	}
 	
@@ -64,7 +64,7 @@ namespace gatorLog {
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
 		serial.writeString(String.fromCharCode(10))
-		basic.pause(10)
+		basic.pause(100)
 		return
 	}
 	
