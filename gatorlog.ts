@@ -36,8 +36,9 @@ namespace gatorLog {
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString(String.fromCharCode(26))
-		serial.writeString("new ")
+		serial.writeString("append ")
 		serial.writeString(value)
+		serial.writeString(String.fromCharCode(13))
 		basic.pause(10)
 		return
 	}
@@ -48,6 +49,7 @@ namespace gatorLog {
 	export function writeStringData(value: string){
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
+		serial.writeString(String.fromCharCode(10))
 		basic.pause(10)
 		return
 	}
@@ -61,6 +63,7 @@ namespace gatorLog {
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString("md ")
 		serial.writeString(value)
+		serial.writeString(String.fromCharCode(13))
 		basic.pause(10)
 		return
 	}
@@ -74,6 +77,7 @@ namespace gatorLog {
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString("cd ")
 		serial.writeString(value)
+		serial.writeString(String.fromCharCode(13))
 		return
 	}
 	
@@ -86,6 +90,7 @@ namespace gatorLog {
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString("size ")
 		serial.writeString(value)
+		serial.writeString(String.fromCharCode(13))
 		return serial.readString()
 	}
 	
@@ -98,6 +103,7 @@ namespace gatorLog {
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString("size ")
 		serial.writeString(value)
+		serial.writeString(String.fromCharCode(13))
 		return serial.readString()
 	}
 	
@@ -111,6 +117,7 @@ namespace gatorLog {
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString("rm ")
 		serial.writeString(value)
+		serial.writeString(String.fromCharCode(13))
 		return
 	}
 	
@@ -124,6 +131,7 @@ namespace gatorLog {
 		serial.writeString(String.fromCharCode(26))
 		serial.writeString("rm -rf ")
 		serial.writeString(value)
+		serial.writeString(String.fromCharCode(13))
 		return
 	}
 }
