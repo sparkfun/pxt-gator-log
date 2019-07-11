@@ -38,13 +38,9 @@ namespace gatorLog {
 	//% blockId="gatorLog_createFile"
 	//% block="create file named %value"
 	export function createFile(value: string){
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
+		serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
 		serial.readUntil(">")
-		serial.writeString("new ")
-		serial.writeString(value)
-		serial.writeString(String.fromCharCode(13))
+		serial.writeString("new " + value + String.fromCharCode(13))
 		serial.readUntil(">")
 		return
 	}
@@ -53,9 +49,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_appendFile"
 	//% block="append to file named %value"
 	export function appendFile(value: string){
-		serial.writeString("append ")
-		serial.writeString(value)
-		serial.writeString(String.fromCharCode(13))
+		serial.writeString("append " + value + String.fromCharCode(13))
 		serial.readUntil("<")
 		return
 	}
@@ -64,9 +58,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_writeStringData"
 	//% block="write string %value | to current file"
 	export function writeStringData(value: string){
-		serial.writeString(value)
-		serial.writeString(String.fromCharCode(13))
-		serial.writeString(String.fromCharCode(10))
+		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
 		basic.pause(10)
 		return
 	}
