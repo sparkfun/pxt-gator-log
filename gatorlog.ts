@@ -25,7 +25,12 @@ namespace gatorLog {
 	//% block="initialize gator:log"
 	export function begin(){
 		serial.redirect(SerialPin.P15, SerialPin.P14, BaudRate.BaudRate9600)
-		basic.pause(200)
+		pins.digitalWritePin(DigitalPin.P13, 1)
+		basic.pause(100)
+		pins.digitalWritePin(DigitalPin.P13, 0)
+		basic.pause(100)
+		pins.digitalWritePin(DigitalPin.P13, 1)
+		serial.readUntil("<")
 		return
 	}
 	
