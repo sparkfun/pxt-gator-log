@@ -40,7 +40,7 @@ namespace gatorLog {
 	export function createFile(value: string){
 		command()
 		serial.writeString("append " + value + String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.readUntil("<")
 		return
 	}
 	
