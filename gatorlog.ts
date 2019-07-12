@@ -26,12 +26,14 @@ namespace gatorLog {
 	export function begin(){
 		serial.redirect(SerialPin.P15, SerialPin.P14, BaudRate.BaudRate9600)
 		pins.digitalWritePin(DigitalPin.P13, 1)
-		basic.pause(2500)
-		/*basic.pause(100)
+		basic.pause(100)
 		pins.digitalWritePin(DigitalPin.P13, 0)
 		basic.pause(100)
 		pins.digitalWritePin(DigitalPin.P13, 1)
-		serial.readUntil("<")*/
+		serial.readUntil("<")
+		serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
+		serial.readUntil(">")
+		serial.writeString("init")
 		return
 	}
 	
