@@ -20,7 +20,7 @@
 namespace gatorLog {
     // Functions for reading Particle from the gatorlog in Particle or straight adv value
 	
-	var commandMode = false
+	let commandMode = 0
 	
 	//% weight=50 
 	//% blockId="gatorLog_begin" 
@@ -44,7 +44,7 @@ namespace gatorLog {
 		command()
 		serial.writeString("append " + value + String.fromCharCode(13))
 		serial.readUntil("<")
-		commandMode = false;
+		commandMode = 0;
 		return
 	}	
 	
@@ -52,16 +52,16 @@ namespace gatorLog {
 		command()
 		serial.writeString("append DELETEME.txt" + String.fromCharCode(13))
 		serial.readUntil("<")
-		commandMode = false;
+		commandMode = 0;
 		return
 	}
 	
 	function command(){
-		if (commandMode == false)
+		if (commandMode == 0)
 		{
 			serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
 			serial.readUntil(">")
-			commandMode = true
+			commandMode = 1
 		}
 		return
 	}
@@ -71,7 +71,7 @@ namespace gatorLog {
 	//% block="write string %value | to current file"
 	export function writeStringData(value: string){
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
-		commandMode = false;
+		commandMode = 0;
 		basic.pause(20)
 		return
 	}
