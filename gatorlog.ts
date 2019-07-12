@@ -38,9 +38,9 @@ namespace gatorLog {
 	//% blockId="gatorLog_createFile"
 	//% block="create file named %value"
 	export function createFile(value: string){
-		//command()
+		command()
 		serial.writeString("append " + value + String.fromCharCode(13))
-		serial.readUntil("<")
+		//serial.readUntil("<")
 		return
 	}
 	
@@ -63,9 +63,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_mkDirectory"
 	//% block="create directory with name %value""
 	export function mkDirectory(value: string){
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
+		command()
 		serial.writeString("md ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
@@ -77,9 +75,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_chDirectory"
 	//% block="change to %value | directory"
 	export function chDirectory(value: string){
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
+		command()
 		serial.writeString("cd ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
@@ -90,9 +86,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_sizeOfFile"
 	//% block="get size of file with name %value"
 	export function sizeOfFile(value: string): string{
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
+		command()
 		serial.writeString("size ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
@@ -103,9 +97,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_readFile"
 	//% block="get size of file with name %value"
 	export function readFile(value: string): string{
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
+		command()
 		serial.writeString("size ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
@@ -116,9 +108,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_removeItem"
 	//% block="remove file %value"
 	export function removeItem(value: string){
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
+		command()
 		serial.writeString("rm ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
@@ -129,9 +119,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_removeDir"
 	//% block="remove directory %value | and it's contents"
 	export function removeDir(value: string){
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
-		serial.writeString(String.fromCharCode(26))
+		command()
 		serial.writeString("rm -rf ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
