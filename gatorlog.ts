@@ -31,8 +31,6 @@ namespace gatorLog {
 		basic.pause(100)
 		pins.digitalWritePin(DigitalPin.P13, 1)
 		serial.readUntil("<")
-		command()
-		serial.writeString("init")
 		return
 	}
 	
