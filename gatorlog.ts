@@ -31,6 +31,7 @@ namespace gatorLog {
 		basic.pause(100)
 		pins.digitalWritePin(DigitalPin.P13, 1)
 		serial.readUntil("<")
+		createDummyFile()
 		return
 	}
 	
@@ -39,8 +40,15 @@ namespace gatorLog {
 	//% block="create file named %value"
 	export function createFile(value: string){
 		command()
-		serial.writeString("append " + value + String.fromCharCode(13) + String.fromCharCode(26))
-		//serial.readUntil("<")
+		serial.writeString("append " + value + String.fromCharCode(13))
+		serial.readUntil("<")
+		return
+	}	
+	
+	function createDummyFile(){
+		command()
+		serial.writeString("append DELETEME.txt" + String.fromCharCode(13))
+		serial.readUntil("<")
 		return
 	}
 	
