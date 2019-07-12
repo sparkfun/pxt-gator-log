@@ -38,7 +38,7 @@ namespace gatorLog {
 	//% blockId="gatorLog_createFile"
 	//% block="create file named %value"
 	export function createFile(value: string){
-		command()
+		//command()
 		serial.writeString("append " + value + String.fromCharCode(13))
 		serial.readUntil("<")
 		return
