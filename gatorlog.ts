@@ -63,7 +63,7 @@ namespace gatorLog {
 	//% block="write string %value | to current file"
 	export function writeStringData(value: string){
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
-		basic.pause(10)
+		basic.pause(20)
 		return
 	}
 	
@@ -72,10 +72,8 @@ namespace gatorLog {
 	//% block="create directory with name %value""
 	export function mkDirectory(value: string){
 		command()
-		serial.writeString("md ")
-		serial.writeString(value)
-		serial.writeString(String.fromCharCode(13))
-		basic.pause(10)
+		serial.writeString("md " + value + String.fromCharCode(13))
+		serial.readUntil(">")
 		return
 	}
 	
@@ -84,9 +82,8 @@ namespace gatorLog {
 	//% block="change to %value | directory"
 	export function chDirectory(value: string){
 		command()
-		serial.writeString("cd ")
-		serial.writeString(value)
-		serial.writeString(String.fromCharCode(13))
+		serial.writeString("cd " + value + String.fromCharCode(13))
+		serial.readUntil(">")
 		return
 	}
 	
@@ -103,7 +100,7 @@ namespace gatorLog {
 	
 	//% weight=44
 	//% blockId="gatorLog_readFile"
-	//% block="get size of file with name %value"
+	//% block="read file with name %value"
 	export function readFile(value: string): string{
 		command()
 		serial.writeString("size ")
