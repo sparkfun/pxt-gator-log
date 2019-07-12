@@ -31,8 +31,7 @@ namespace gatorLog {
 		basic.pause(100)
 		pins.digitalWritePin(DigitalPin.P13, 1)
 		serial.readUntil("<")
-		serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
-		serial.readUntil(">")
+		command()
 		serial.writeString("init")
 		return
 	}
@@ -41,28 +40,15 @@ namespace gatorLog {
 	//% blockId="gatorLog_createFile"
 	//% block="create file named %value"
 	export function createFile(value: string){
-		serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
-		serial.readUntil(">")
-		serial.writeString("new " + value + String.fromCharCode(13))
-		serial.readUntil(">")
-		return
-	}
-	
-	//% weight=49
-	//% blockId="gatorLog_command"
-	//% block="create file named %value"
-	export function command(value: string){
-		serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
-		serial.readUntil(">")
-		return
-	}
-	
-	//% weight=49
-	//% blockId="gatorLog_appendFile"
-	//% block="append to file named %value"
-	export function appendFile(value: string){
+		command()
 		serial.writeString("append " + value + String.fromCharCode(13))
-		serial.readUntil("<")
+		serial.readUntil(">")
+		return
+	}
+	
+	function command(){
+		serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
+		serial.readUntil(">")
 		return
 	}
 	
