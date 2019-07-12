@@ -39,7 +39,7 @@ namespace gatorLog {
 	//% block="create file named %value"
 	export function createFile(value: string){
 		command()
-		serial.writeString("append " + value + String.fromCharCode(13))
+		serial.writeString("append " + value + String.fromCharCode(13) + String.fromCharCode(26))
 		//serial.readUntil("<")
 		return
 	}
