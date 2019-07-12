@@ -50,6 +50,7 @@ namespace gatorLog {
 	//% block="create file named %value"
 	export function command(value: string){
 		serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
+		serial.readUntil(">")
 		return
 	}
 	
