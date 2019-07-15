@@ -84,6 +84,8 @@ namespace gatorLog {
 		serial.readUntil("<")
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
 		serial.readUntil("<")
+		serial.writeString(String.fromCharCode(10))
+		serial.readUntil("<")
 		commandMode = 0;
 		basic.pause(20)
 		return
@@ -99,6 +101,8 @@ namespace gatorLog {
 		serial.readUntil("<")
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
 		serial.readUntil("<")
+		serial.writeString(String.fromCharCode(10))
+		serial.readUntil("<")
 		commandMode = 0;
 		basic.pause(20)
 		return
@@ -111,7 +115,6 @@ namespace gatorLog {
 		command()
 		serial.writeString("md " + value + String.fromCharCode(13))
 		serial.readUntil(">")
-		commandMode = 1
 		return
 	}
 	
