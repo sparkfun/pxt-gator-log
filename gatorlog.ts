@@ -79,9 +79,11 @@ namespace gatorLog {
 	//% blockId="gatorLog_writeStringData"
 	//% block="write line %value | to current file"
 	export function writeStringData(value: string){
-		command()
-		serial.writeString("append " + currentFile + String.fromCharCode(13))
-		serial.readUntil("<")
+		if (commandMode == 1)
+		{
+			serial.writeString("append " + currentFile + String.fromCharCode(13))
+			serial.readUntil("<")
+		}
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
 		commandMode = 0
 		basic.pause(20)
