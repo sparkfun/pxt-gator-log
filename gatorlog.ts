@@ -195,6 +195,7 @@ namespace gatorLog {
 	export function removeItem(value: string){
 		command()
 		serial.writeString("rm " + value + String.fromCharCode(13))
+		serial.readUntil(">")
 		return
 	}
 	
@@ -204,6 +205,7 @@ namespace gatorLog {
 	export function removeDir(value: string){
 		command()
 		serial.writeString("rm -rf " + value + String.fromCharCode(13))
+		serial.readUntil(">")
 		return
 	}
 }
