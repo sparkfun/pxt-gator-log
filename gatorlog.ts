@@ -73,10 +73,23 @@ namespace gatorLog {
 	//% blockId="gatorLog_writeStringData"
 	//% block="write line %value | to current file"
 	export function writeStringData(value: string){
-		if (commandMode == 1)
-		{
-			openFile(currentFile)
-		}
+		command()
+		serial.writeString("write " + currentFile + " " + String(offset) + String.fromCharCode(13))
+		serial.readUntil("<")
+		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
+		commandMode = 0;
+		basic.pause(20)
+		return
+	}
+	
+	//% weight=48
+	//% blockId="gatorLog_writeStringDataOffset"
+	//% block="write line %value | to current file from position %offset"
+	//% advanced=true
+	export function writeStringDataOffset(value: string, offset: number){
+		command()
+		serial.writeString("write " + currentFile + " " + String(offset) + String.fromCharCode(13))
+		serial.readUntil("<")
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
 		commandMode = 0;
 		basic.pause(20)
@@ -122,7 +135,10 @@ namespace gatorLog {
 	export function readFile(value: string): string{
 		command()
 		serial.writeString("read " + value + String.fromCharCode(13))
-		return serial.readString()
+		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
+		let returnString = serial.readUntil(String.fromCharCode(13))
+		serial.readUntil(">")
+		return returnString
 	}
 	
 	//% weight=42
