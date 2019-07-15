@@ -83,12 +83,13 @@ namespace gatorLog {
 		serial.writeString("write " + currentFile + String.fromCharCode(13))
 		serial.readUntil("<")
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
+		serial.readUntil("<")
 		commandMode = 0;
 		basic.pause(20)
 		return
 	}
 	
-	//% weight=48
+	//% weight=30
 	//% blockId="gatorLog_writeStringDataOffset"
 	//% block="write line %value | at position %offset"
 	//% advanced=true
@@ -97,6 +98,7 @@ namespace gatorLog {
 		serial.writeString("write " + currentFile + " " + String(offset) + String.fromCharCode(13))
 		serial.readUntil("<")
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
+		serial.readUntil("<")
 		commandMode = 0;
 		basic.pause(20)
 		return
@@ -147,7 +149,7 @@ namespace gatorLog {
 		return returnString
 	}
 	
-	//% weight=45
+	//% weight=29
 	//% blockId="gatorLog_readFileOffset"
 	//% block="read from file with name %value | starting at position %offset"
 	//% advanced=true
@@ -160,7 +162,7 @@ namespace gatorLog {
 		return returnString
 	}
 	
-	//% weight=46
+	//% weight=28
 	//% blockId="gatorLog_readFileOffsetLength"
 	//% block="read %length | characters from file with name %value | starting at position %offset"
 	//% advanced=true
@@ -173,7 +175,7 @@ namespace gatorLog {
 		return returnString
 	}
 	
-	//% weight=47
+	//% weight=27
 	//% blockId="gatorLog_readFileOffsetLengthType"
 	//% block="read %length | characters from file with name %value | starting at position %offset | in output type %returnDataType"
 	//% advanced=true
