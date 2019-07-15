@@ -16,6 +16,12 @@
  * Functions to operate the gatorlog sensor
  */
 
+ enum returnDataType{
+	ASCII=1,
+	HEXADECIMAL=2,
+	RAW=3
+ }
+
 //% color=#f44242 icon="\uf185"
 namespace gatorLog {
     // Functions for reading Particle from the gatorlog in Particle or straight adv value
@@ -74,7 +80,7 @@ namespace gatorLog {
 	//% block="write line %value | to current file"
 	export function writeStringData(value: string){
 		command()
-		serial.writeString("write " + currentFile + " " + String(offset) + String.fromCharCode(13))
+		serial.writeString("write " + currentFile + String.fromCharCode(13))
 		serial.readUntil("<")
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
 		commandMode = 0;
@@ -84,7 +90,7 @@ namespace gatorLog {
 	
 	//% weight=48
 	//% blockId="gatorLog_writeStringDataOffset"
-	//% block="write line %value | to current file from position %offset"
+	//% block="write line %value | at position %offset"
 	//% advanced=true
 	export function writeStringDataOffset(value: string, offset: number){
 		command()
@@ -135,6 +141,45 @@ namespace gatorLog {
 	export function readFile(value: string): string{
 		command()
 		serial.writeString("read " + value + String.fromCharCode(13))
+		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
+		let returnString = serial.readUntil(String.fromCharCode(13))
+		serial.readUntil(">")
+		return returnString
+	}
+	
+	//% weight=45
+	//% blockId="gatorLog_readFileOffset"
+	//% block="read from file with name %value | starting at position %offset"
+	//% advanced=true
+	export function readFileOffset(value: string, offset: number): string{
+		command()
+		serial.writeString("read " + value + " " + String(offset) + String.fromCharCode(13))
+		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
+		let returnString = serial.readUntil(String.fromCharCode(13))
+		serial.readUntil(">")
+		return returnString
+	}
+	
+	//% weight=46
+	//% blockId="gatorLog_readFileOffsetLength"
+	//% block="read %length | characters from file with name %value | starting at position %offset"
+	//% advanced=true
+	export function readFileOffsetLength(value: string, length: number, offset: number): string{
+		command()
+		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + String.fromCharCode(13))
+		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
+		let returnString = serial.readUntil(String.fromCharCode(13))
+		serial.readUntil(">")
+		return returnString
+	}
+	
+	//% weight=47
+	//% blockId="gatorLog_readFileOffsetLengthType"
+	//% block="read %length | characters from file with name %value | starting at position %offset | in output type %returnDataType"
+	//% advanced=true
+	export function readFileOffsetLengthType(value: string, length: number, offset: number, type: returnDataType): string{
+		command()
+		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + " " + String(returnDataType) + String.fromCharCode(13))
 		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
 		let returnString = serial.readUntil(String.fromCharCode(13))
 		serial.readUntil(">")
