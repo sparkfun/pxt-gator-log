@@ -69,7 +69,7 @@ namespace gatorLog {
 	
 	//% weight=48
 	//% blockId="gatorLog_writeStringData"
-	//% block="write string %value | to current file"
+	//% block="write line %value | to current file"
 	export function writeStringData(value: string){
 		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
 		commandMode = 0;
@@ -84,6 +84,7 @@ namespace gatorLog {
 		command()
 		serial.writeString("md " + value + String.fromCharCode(13))
 		serial.readUntil(">")
+		commandMode = 1
 		return
 	}
 	
@@ -105,7 +106,8 @@ namespace gatorLog {
 		serial.writeString("size ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
-		return serial.readString()
+		serial.readUntil(String.fromCharCode(10))
+		return serial.readUntil(String.fromCharCode(13))
 	}
 	
 	//% weight=44
@@ -113,7 +115,7 @@ namespace gatorLog {
 	//% block="read file with name %value"
 	export function readFile(value: string): string{
 		command()
-		serial.writeString("size ")
+		serial.writeString("read ")
 		serial.writeString(value)
 		serial.writeString(String.fromCharCode(13))
 		return serial.readString()
