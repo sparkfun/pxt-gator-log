@@ -45,6 +45,7 @@ namespace gatorLog {
 		basic.pause(100)
 		pins.digitalWritePin(DigitalPin.P13, 1)
 		serial.readUntil(writeReady)
+		basic.pause(20)
 		dummyFile()
 		return
 	}
@@ -56,6 +57,7 @@ namespace gatorLog {
 		command()
 		serial.writeString("append " + value + carriageReturn)
 		serial.readUntil(writeReady)
+			basic.pause(20)
 		currentFile = value
 		commandMode = 0;
 		return
@@ -66,6 +68,7 @@ namespace gatorLog {
 		command()
 		serial.writeString("append DELETEME.txt" + carriageReturn)
 		serial.readUntil(writeReady)
+			basic.pause(20)
 		commandMode = 0;
 		removeItem("DELETEME.txt")
 		return
@@ -76,6 +79,7 @@ namespace gatorLog {
 		{
 			serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
 			serial.readUntil(commandReady)
+			basic.pause(20)
 			commandMode = 1
 		}
 		return
@@ -89,6 +93,7 @@ namespace gatorLog {
 		{
 			serial.writeString("append " + currentFile + carriageReturn)
 			serial.readUntil(writeReady)
+			basic.pause(20)
 		}
 		serial.writeString(value + carriageReturn + newLine)
 		commandMode = 0
@@ -104,8 +109,10 @@ namespace gatorLog {
 		command()
 		serial.writeString("write " + currentFile + " " + String(offset) + carriageReturn)
 		serial.readUntil(writeReady)
+		basic.pause(20)
 		serial.writeString(value + carriageReturn + newLine)
 		serial.readUntil(writeReady)
+		basic.pause(20)
 		serial.writeString(carriageReturn + newLine)
 		serial.readUntil(commandReady)
 		basic.pause(20)
@@ -119,6 +126,7 @@ namespace gatorLog {
 		command()
 		serial.writeString("md " + value + carriageReturn)
 		serial.readUntil(commandReady)
+		basic.pause(20)
 		return
 	}
 	
@@ -129,6 +137,7 @@ namespace gatorLog {
 		command()
 		serial.writeString("cd " + value + carriageReturn)
 		serial.readUntil(commandReady)
+		basic.pause(20)
 		return
 	}
 	
@@ -141,6 +150,7 @@ namespace gatorLog {
 		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
 		let returnString = serial.readUntil(carriageReturn)
 		serial.readUntil(commandReady)
+		basic.pause(20)
 		return returnString
 	}
 	
@@ -153,6 +163,7 @@ namespace gatorLog {
 		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
 		let returnString = serial.readUntil(carriageReturn)
 		serial.readUntil(commandReady)
+		basic.pause(20)
 		return returnString
 	}
 	
@@ -166,6 +177,7 @@ namespace gatorLog {
 		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
 		let returnString = serial.readUntil(carriageReturn)
 		serial.readUntil(commandReady)
+		basic.pause(20)
 		return returnString
 	}
 	
@@ -179,6 +191,7 @@ namespace gatorLog {
 		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
 		let returnString = serial.readUntil(carriageReturn)
 		serial.readUntil(commandReady)
+		basic.pause(20)
 		return returnString
 	}
 	
@@ -192,6 +205,7 @@ namespace gatorLog {
 		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
 		let returnString = serial.readUntil(carriageReturn)
 		serial.readUntil(commandReady)
+		basic.pause(20)
 		return returnString
 	}
 	
@@ -202,6 +216,7 @@ namespace gatorLog {
 		command()
 		serial.writeString("rm " + value + carriageReturn)
 		serial.readUntil(commandReady)
+		basic.pause(20)
 		return
 	}
 	
@@ -212,6 +227,7 @@ namespace gatorLog {
 		command()
 		serial.writeString("rm -rf " + value + carriageReturn)
 		serial.readUntil(commandReady)
+		basic.pause(20)
 		return
 	}
 }
