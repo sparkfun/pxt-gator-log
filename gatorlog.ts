@@ -28,6 +28,10 @@ namespace gatorLog {
 	
 	let commandMode = 0
 	let currentFile = ""
+	let carriageReturn = String.fromCharCode(13)
+	let newLine = String.fromCharCode(10)
+	let commandReady = ">"
+	let writeReady = "<"
 	
 	//% weight=50 
 	//% blockId="gatorLog_begin" 
@@ -40,7 +44,7 @@ namespace gatorLog {
 		pins.digitalWritePin(DigitalPin.P13, 0)
 		basic.pause(100)
 		pins.digitalWritePin(DigitalPin.P13, 1)
-		serial.readUntil("<")
+		serial.readUntil(writeReady)
 		dummyFile()
 		return
 	}
@@ -50,18 +54,20 @@ namespace gatorLog {
 	//% block="open file named %value"
 	export function openFile(value: string){
 		command()
-		serial.writeString("append " + value + String.fromCharCode(13))
-		serial.readUntil("<")
+		serial.writeString("append " + value + carriageReturn)
+		serial.readUntil(writeReady)
 		currentFile = value
 		commandMode = 0;
 		return
 	}	
 	
+	//The only reason we have this function is so we don't set currentFile to DELETEME.txt
 	function dummyFile(){
 		command()
-		serial.writeString("append DELETEME.txt" + String.fromCharCode(13))
-		serial.readUntil("<")
+		serial.writeString("append DELETEME.txt" + carriageReturn)
+		serial.readUntil(writeReady)
 		commandMode = 0;
+		removeItem("DELETEME.txt")
 		return
 	}
 	
@@ -69,22 +75,22 @@ namespace gatorLog {
 		if (commandMode == 0)
 		{
 			serial.writeString(String.fromCharCode(26) + String.fromCharCode(26) + String.fromCharCode(26))
-			serial.readUntil(">")
+			serial.readUntil(commandReady)
 			commandMode = 1
 		}
 		return
 	}
 	
-	//% weight=48
 	//% blockId="gatorLog_writeStringData"
+	//% weight=48
 	//% block="write line %value | to current file"
 	export function writeStringData(value: string){
 		if (commandMode == 1)
 		{
-			serial.writeString("append " + currentFile + String.fromCharCode(13))
-			serial.readUntil("<")
+			serial.writeString("append " + currentFile + carriageReturn)
+			serial.readUntil(writeReady)
 		}
-		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
+		serial.writeString(value + carriageReturn + newLine)
 		commandMode = 0
 		basic.pause(20)
 		return
@@ -96,12 +102,12 @@ namespace gatorLog {
 	//% advanced=true
 	export function writeStringDataOffset(value: string, offset: number){
 		command()
-		serial.writeString("write " + currentFile + " " + String(offset) + String.fromCharCode(13))
-		serial.readUntil("<")
-		serial.writeString(value + String.fromCharCode(13) + String.fromCharCode(10))
-		serial.readUntil("<")
-		serial.writeString(String.fromCharCode(13) + String.fromCharCode(10))
-		serial.readUntil(">")
+		serial.writeString("write " + currentFile + " " + String(offset) + carriageReturn)
+		serial.readUntil(writeReady)
+		serial.writeString(value + carriageReturn + newLine)
+		serial.readUntil(writeReady)
+		serial.writeString(carriageReturn + newLine)
+		serial.readUntil(commandReady)
 		basic.pause(20)
 		return
 	}
@@ -111,8 +117,8 @@ namespace gatorLog {
 	//% block="create directory with name %value""
 	export function mkDirectory(value: string){
 		command()
-		serial.writeString("md " + value + String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.writeString("md " + value + carriageReturn)
+		serial.readUntil(commandReady)
 		return
 	}
 	
@@ -121,8 +127,8 @@ namespace gatorLog {
 	//% block="change to %value | directory"
 	export function chDirectory(value: string){
 		command()
-		serial.writeString("cd " + value + String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.writeString("cd " + value + carriageReturn)
+		serial.readUntil(commandReady)
 		return
 	}
 	
@@ -131,10 +137,10 @@ namespace gatorLog {
 	//% block="get size of file with name %value"
 	export function sizeOfFile(value: string): string{
 		command()
-		serial.writeString("size " + value + String.fromCharCode(13))
-		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
-		let returnString = serial.readUntil(String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.writeString("size " + value + carriageReturn)
+		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
+		let returnString = serial.readUntil(carriageReturn)
+		serial.readUntil(commandReady)
 		return returnString
 	}
 	
@@ -143,10 +149,10 @@ namespace gatorLog {
 	//% block="read file with name %value"
 	export function readFile(value: string): string{
 		command()
-		serial.writeString("read " + value + String.fromCharCode(13))
-		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
-		let returnString = serial.readUntil(String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.writeString("read " + value + carriageReturn)
+		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
+		let returnString = serial.readUntil(carriageReturn)
+		serial.readUntil(commandReady)
 		return returnString
 	}
 	
@@ -156,10 +162,10 @@ namespace gatorLog {
 	//% advanced=true
 	export function readFileOffset(value: string, offset: number): string{
 		command()
-		serial.writeString("read " + value + " " + String(offset) + String.fromCharCode(13))
-		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
-		let returnString = serial.readUntil(String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.writeString("read " + value + " " + String(offset) + carriageReturn)
+		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
+		let returnString = serial.readUntil(carriageReturn)
+		serial.readUntil(commandReady)
 		return returnString
 	}
 	
@@ -169,10 +175,10 @@ namespace gatorLog {
 	//% advanced=true
 	export function readFileOffsetLength(value: string, length: number, offset: number): string{
 		command()
-		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + String.fromCharCode(13))
-		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
-		let returnString = serial.readUntil(String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + carriageReturn)
+		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
+		let returnString = serial.readUntil(carriageReturn)
+		serial.readUntil(commandReady)
 		return returnString
 	}
 	
@@ -182,10 +188,10 @@ namespace gatorLog {
 	//% advanced=true
 	export function readFileOffsetLengthType(value: string, length: number, offset: number, type: returnDataType): string{
 		command()
-		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + " " + String(returnDataType) + String.fromCharCode(13))
-		serial.readUntil(String.fromCharCode(10))//Use this and the readUntil(">") to properly frame the openLogs response
-		let returnString = serial.readUntil(String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + " " + String(returnDataType) + carriageReturn)
+		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
+		let returnString = serial.readUntil(carriageReturn)
+		serial.readUntil(commandReady)
 		return returnString
 	}
 	
@@ -194,8 +200,8 @@ namespace gatorLog {
 	//% block="remove file %value"
 	export function removeItem(value: string){
 		command()
-		serial.writeString("rm " + value + String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.writeString("rm " + value + carriageReturn)
+		serial.readUntil(commandReady)
 		return
 	}
 	
@@ -204,8 +210,8 @@ namespace gatorLog {
 	//% block="remove directory %value | and it's contents"
 	export function removeDir(value: string){
 		command()
-		serial.writeString("rm -rf " + value + String.fromCharCode(13))
-		serial.readUntil(">")
+		serial.writeString("rm -rf " + value + carriageReturn)
+		serial.readUntil(commandReady)
 		return
 	}
 }
