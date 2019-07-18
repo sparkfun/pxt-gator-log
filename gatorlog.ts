@@ -252,7 +252,7 @@ namespace gatorLog {
 	* Read data starting at the given position from the file with the specified name.
 	*/
 	//% blockId="gatorLog_readFileOffset"
-	//% block="read from file with name %value | starting at position %offset"
+	//% block="read from %value | starting at position %offset"
 	//% advanced=true
 	//% blockGap=6
 	export function readFileOffset(value: string, offset: number): string{
@@ -269,7 +269,7 @@ namespace gatorLog {
 	* Read a length of data starting at the given position from the file with the specified name.
 	*/
 	//% blockId="gatorLog_readFileOffsetLength"
-	//% block="read %length | characters from file with name %value | starting at position %offset"
+	//% block="read %length | characters from %value | starting at %offset"
 	//% advanced=true
 	//% blockGap=6
 	export function readFileOffsetLength(value: string, length: number, offset: number): string{
@@ -286,7 +286,7 @@ namespace gatorLog {
 	* Read a length of data starting at the given position from the file with the specified name. Type determines what format the data is returned in.
 	*/
 	//% blockId="gatorLog_readFileOffsetLengthType"
-	//% block="read %length | characters from file with name %value | starting at position %offset | in output type %returnDataType"
+	//% block="read %length | data from %value | starting at %offset | in output type %returnDataType"
 	//% advanced=true
 	export function readFileOffsetLengthType(value: string, length: number, offset: number, type: returnDataType): string{
 		command()
