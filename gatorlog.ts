@@ -23,7 +23,7 @@
  }
 
 //% color=#f44242 
-//% icon="\uf70e"
+//% icon="\uf0ce"
 namespace gatorLog {
     // Functions for reading Particle from the gatorlog in Particle or straight adv value
 	
@@ -62,7 +62,7 @@ namespace gatorLog {
 	//% weight=50 
 	//% blockId="gatorLog_begin" 
 	//% block="initialize gator:log"
-	//% blockGap=12
+	//% blockGap=25
 	export function begin(){
 		basic.pause(2500)
 		serial.redirect(SerialPin.P15, SerialPin.P14, BaudRate.BaudRate9600)
@@ -145,7 +145,7 @@ namespace gatorLog {
 	//% weight=45
 	//% blockId="gatorLog_removeDir"
 	//% block="remove folder %value | and it's contents"
-	//% blockGap=16
+	//% blockGap=25
 	export function removeDir(value: string){
 		command()
 		serial.writeString("rm -rf " + value + carriageReturn)
@@ -195,6 +195,39 @@ namespace gatorLog {
 	}
 	
 	/**
+	* Read contents of the file with the specified name
+	*/
+	//% weight=43
+	//% blockId="gatorLog_readFile"
+	//% block="read file with name %value"
+	//% blockGap=6
+	export function readFile(value: string): string{
+		command()
+		serial.writeString("read " + value + carriageReturn)
+		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
+		let returnString = serial.readUntil(carriageReturn)
+		serial.readUntil(commandReady)
+		basic.pause(20)
+		return returnString
+	}
+	
+	/**
+	* Returns the size of the specified file
+	*/
+	//% weight=42
+	//% blockId="gatorLog_sizeOfFile"
+	//% block="get size of file with name %value"
+	export function sizeOfFile(value: string): string{
+		command()
+		serial.writeString("size " + value + carriageReturn)
+		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
+		let returnString = serial.readUntil(carriageReturn)
+		serial.readUntil(commandReady)
+		basic.pause(20)
+		return returnString
+	}
+	
+	/**
 	* Writes text to the current open file at the position specified. If no file has been opened, this will be recorded to the LOGxxxx.txt folder
 	*/
 	//% weight=30
@@ -214,23 +247,6 @@ namespace gatorLog {
 		serial.readUntil(commandReady)
 		basic.pause(20)
 		return
-	}
-	
-	/**
-	* Read contents of the file with the specified name
-	*/
-	//% weight=43
-	//% blockId="gatorLog_readFile"
-	//% block="read file with name %value"
-	//% blockGap=6
-	export function readFile(value: string): string{
-		command()
-		serial.writeString("read " + value + carriageReturn)
-		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
-		let returnString = serial.readUntil(carriageReturn)
-		serial.readUntil(commandReady)
-		basic.pause(20)
-		return returnString
 	}
 	
 	/**
@@ -279,22 +295,6 @@ namespace gatorLog {
 	export function readFileOffsetLengthType(value: string, length: number, offset: number, type: returnDataType): string{
 		command()
 		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + " " + String(returnDataType) + carriageReturn)
-		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
-		let returnString = serial.readUntil(carriageReturn)
-		serial.readUntil(commandReady)
-		basic.pause(20)
-		return returnString
-	}
-	
-	/**
-	* Returns the size of the specified file
-	*/
-	//% weight=42
-	//% blockId="gatorLog_sizeOfFile"
-	//% block="get size of file with name %value"
-	export function sizeOfFile(value: string): string{
-		command()
-		serial.writeString("size " + value + carriageReturn)
 		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
 		let returnString = serial.readUntil(carriageReturn)
 		serial.readUntil(commandReady)
