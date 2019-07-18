@@ -230,7 +230,6 @@ namespace gatorLog {
 	/**
 	* Writes text to the current open file at the position specified. If no file has been opened, this will be recorded to the LOGxxxx.txt folder
 	*/
-	//% weight=30
 	//% blockId="gatorLog_writeLineOffset"
 	//% block="write line %value | at position %offset"
 	//% advanced=true
@@ -252,7 +251,6 @@ namespace gatorLog {
 	/**
 	* Read data starting at the given position from the file with the specified name.
 	*/
-	//% weight=29
 	//% blockId="gatorLog_readFileOffset"
 	//% block="read from file with name %value | starting at position %offset"
 	//% advanced=true
@@ -270,7 +268,6 @@ namespace gatorLog {
 	/**
 	* Read a length of data starting at the given position from the file with the specified name.
 	*/
-	//% weight=28
 	//% blockId="gatorLog_readFileOffsetLength"
 	//% block="read %length | characters from file with name %value | starting at position %offset"
 	//% advanced=true
@@ -288,7 +285,6 @@ namespace gatorLog {
 	/**
 	* Read a length of data starting at the given position from the file with the specified name. Type determines what format the data is returned in.
 	*/
-	//% weight=27
 	//% blockId="gatorLog_readFileOffsetLengthType"
 	//% block="read %length | characters from file with name %value | starting at position %offset | in output type %returnDataType"
 	//% advanced=true
