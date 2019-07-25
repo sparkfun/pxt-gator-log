@@ -17,9 +17,9 @@
  */
 
  enum ReturnDataType{
-	ASCII=1,
-	HEXADECIMAL=2,
-	RAW=3
+	Ascii=1,
+	Hexadecimal=2,
+	Raw=3
  }
 
 //% color=#f44242 
@@ -260,10 +260,10 @@ namespace gatorLog {
 	
 	/**
 	* Read a length of data starting at the given position from the file with the specified name. Type determines what format the data is returned in.
-	
+	*/
 	//% weight=38
 	//% blockId="gatorLog_readFileOffsetLengthType"
-	//% block="read %length | data from %value | starting at %offset | in output type %ReturnDataType"
+	//% block="read %length | data from %value | starting at %offset | in output type %type"
 	//% advanced=true
 	export function readFileOffsetLengthType(length: number, value: string, offset: number, type: ReturnDataType): string{
 		command()
@@ -273,7 +273,7 @@ namespace gatorLog {
 		serial.readUntil(commandReady)
 		basic.pause(20)
 		return returnString
-	}*/
+	}
 	
 	/**
 	* Returns the size of the specified file
