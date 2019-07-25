@@ -192,6 +192,7 @@ namespace gatorLog {
 	//% weight=42
 	//% blockId="gatorLog_writeLineOffset"
 	//% block="write line %value | at position %offset"
+	//% advanced=true
 	export function writeLineOffset(value: string, offset: number){
 		command()
 		serial.writeString("write " + currentFile + " " + String(offset) + carriageReturn)
@@ -212,6 +213,7 @@ namespace gatorLog {
 	//% weight=41
 	//% blockId="gatorLog_readFile"
 	//% block="read file with name %value"
+	//% advanced=true
 	export function readFile(value: string): string{
 		command()
 		serial.writeString("read " + value + carriageReturn)
@@ -224,10 +226,11 @@ namespace gatorLog {
 	
 	/**
 	* Read data starting at the given position from the file with the specified name.
-	
+	*/
 	//% weight=40
 	//% blockId="gatorLog_readFileOffset"
 	//% block="read from %value | starting at position %offset"
+	//% advanced=true
 	export function readFileOffset(value: string, offset: number): string{
 		command()
 		serial.writeString("read " + value + " " + String(offset) + carriageReturn)
@@ -236,15 +239,16 @@ namespace gatorLog {
 		serial.readUntil(commandReady)
 		basic.pause(20)
 		return returnString
-	}*/
+	}
 	
 	/**
 	* Read a length of data starting at the given position from the file with the specified name.
-	
+	*/
 	//% weight=39
 	//% blockId="gatorLog_readFileOffsetLength"
 	//% block="read %length | characters from %value | starting at %offset"
-	export function readFileOffsetLength(value: string, length: number, offset: number): string{
+	//% advanced=true
+	export function readFileOffsetLength(length: number, value: string, offset: number): string{
 		command()
 		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + carriageReturn)
 		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
@@ -252,15 +256,16 @@ namespace gatorLog {
 		serial.readUntil(commandReady)
 		basic.pause(20)
 		return returnString
-	}*/
+	}
 	
 	/**
 	* Read a length of data starting at the given position from the file with the specified name. Type determines what format the data is returned in.
-	
+	*/
 	//% weight=38
 	//% blockId="gatorLog_readFileOffsetLengthType"
 	//% block="read %length | data from %value | starting at %offset | in output type %returnDataType"
-	export function readFileOffsetLengthType(value: string, length: number, offset: number, type: returnDataType): string{
+	//% advanced=true
+	export function readFileOffsetLengthType(length: number, value: string, offset: number, type: returnDataType): string{
 		command()
 		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + " " + String(returnDataType) + carriageReturn)
 		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
@@ -268,14 +273,15 @@ namespace gatorLog {
 		serial.readUntil(commandReady)
 		basic.pause(20)
 		return returnString
-	}*/
+	}
 	
 	/**
 	* Returns the size of the specified file
-	
+	*/
 	//% weight=37
 	//% blockId="gatorLog_sizeOfFile"
 	//% block="get size of file with name %value"
+	//% advanced=true
 	export function sizeOfFile(value: string): string{
 		command()
 		serial.writeString("size " + value + carriageReturn)
@@ -284,5 +290,5 @@ namespace gatorLog {
 		serial.readUntil(commandReady)
 		basic.pause(20)
 		return returnString
-	}*/
+	}
 }
