@@ -114,7 +114,7 @@ namespace gatorLog {
 	*/
 	//% weight=47
 	//% blockId="gatorLog_mkDirectory"
-	//% block="create folder with name %value""
+	//% block="create folder with name %value"
 	//% blockGap=6
 	export function mkDirectory(value: string){
 		command()
