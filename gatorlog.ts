@@ -62,7 +62,6 @@ namespace gatorLog {
 	//% weight=50 
 	//% blockId="gatorLog_begin" 
 	//% block="initialize gator:log"
-	//% blockGap=24
 	export function begin(){
 		basic.pause(2500)
 		serial.redirect(SerialPin.P15, SerialPin.P14, BaudRate.BaudRate9600)
@@ -83,7 +82,6 @@ namespace gatorLog {
 	//% weight=49
 	//% blockId="gatorLog_openFile"
 	//% block="open file named %value"
-	//% blockGap=6
 	export function openFile(value: string){
 		command()
 		serial.writeString("append " + value + carriageReturn)
@@ -100,7 +98,6 @@ namespace gatorLog {
 	//% weight=48
 	//% blockId="gatorLog_removeItem"
 	//% block="remove file %value"
-	//% blockGap=24
 	export function removeItem(value: string){
 		command()
 		serial.writeString("rm " + value + carriageReturn)
@@ -115,7 +112,6 @@ namespace gatorLog {
 	//% weight=47
 	//% blockId="gatorLog_mkDirectory"
 	//% block="create folder with name %value"
-	//% blockGap=6
 	export function mkDirectory(value: string){
 		command()
 		serial.writeString("md " + value + carriageReturn)
@@ -130,7 +126,6 @@ namespace gatorLog {
 	//% weight=46
 	//% blockId="gatorLog_chDirectory"
 	//% block="change to %value | folder"
-	//% blockGap=6
 	export function chDirectory(value: string){
 		command()
 		serial.writeString("cd " + value + carriageReturn)
@@ -145,7 +140,6 @@ namespace gatorLog {
 	//% weight=45
 	//% blockId="gatorLog_removeDir"
 	//% block="remove folder %value | and it's contents"
-	//% blockGap=25
 	export function removeDir(value: string){
 		command()
 		serial.writeString("rm -rf " + value + carriageReturn)
@@ -160,7 +154,6 @@ namespace gatorLog {
 	//% blockId="gatorLog_writeLine"
 	//% weight=44
 	//% block="write line %value | to current file"
-	//% blockGap=6
 	export function writeLine(value: string){
 		if (commandMode == 1)
 		{
@@ -180,7 +173,6 @@ namespace gatorLog {
 	//% blockId="gatorLog_writeText"
 	//% weight=43
 	//% block="write %value | to current file"
-	//% blockGap=6
 	export function writeText(value: string){
 		if (commandMode == 1)
 		{
@@ -200,7 +192,6 @@ namespace gatorLog {
 	//% weight=42
 	//% blockId="gatorLog_writeLineOffset"
 	//% block="write line %value | at position %offset"
-	//% blockGap=24
 	export function writeLineOffset(value: string, offset: number){
 		command()
 		serial.writeString("write " + currentFile + " " + String(offset) + carriageReturn)
@@ -221,7 +212,6 @@ namespace gatorLog {
 	//% weight=41
 	//% blockId="gatorLog_readFile"
 	//% block="read file with name %value"
-	//% blockGap=6
 	export function readFile(value: string): string{
 		command()
 		serial.writeString("read " + value + carriageReturn)
@@ -238,7 +228,6 @@ namespace gatorLog {
 	//% weight=40
 	//% blockId="gatorLog_readFileOffset"
 	//% block="read from %value | starting at position %offset"
-	//% blockGap=6
 	export function readFileOffset(value: string, offset: number): string{
 		command()
 		serial.writeString("read " + value + " " + String(offset) + carriageReturn)
@@ -255,7 +244,6 @@ namespace gatorLog {
 	//% weight=39
 	//% blockId="gatorLog_readFileOffsetLength"
 	//% block="read %length | characters from %value | starting at %offset"
-	//% blockGap=6
 	export function readFileOffsetLength(value: string, length: number, offset: number): string{
 		command()
 		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + carriageReturn)
@@ -272,7 +260,6 @@ namespace gatorLog {
 	//% weight=38
 	//% blockId="gatorLog_readFileOffsetLengthType"
 	//% block="read %length | data from %value | starting at %offset | in output type %returnDataType"
-	//% blockGap=6
 	export function readFileOffsetLengthType(value: string, length: number, offset: number, type: returnDataType): string{
 		command()
 		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + " " + String(returnDataType) + carriageReturn)
