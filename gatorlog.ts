@@ -16,7 +16,7 @@
  * Functions to operate the gatorlog sensor
  */
 
- enum returnDataType{
+ enum ReturnDataType{
 	ASCII=1,
 	HEXADECIMAL=2,
 	RAW=3
@@ -260,20 +260,20 @@ namespace gatorLog {
 	
 	/**
 	* Read a length of data starting at the given position from the file with the specified name. Type determines what format the data is returned in.
-	*/
+	
 	//% weight=38
 	//% blockId="gatorLog_readFileOffsetLengthType"
-	//% block="read %length | data from %value | starting at %offset | in output type %returnDataType"
+	//% block="read %length | data from %value | starting at %offset | in output type %ReturnDataType"
 	//% advanced=true
-	export function readFileOffsetLengthType(length: number, value: string, offset: number, type: returnDataType): string{
+	export function readFileOffsetLengthType(length: number, value: string, offset: number, type: ReturnDataType): string{
 		command()
-		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + " " + String(returnDataType) + carriageReturn)
+		serial.writeString("read " + value + " " + String(offset) + " " + String(length) + " " + String(ReturnDataType) + carriageReturn)
 		serial.readUntil(newLine)//Use this and the readUntil(commandReady) to properly frame the openLogs response
 		let returnString = serial.readUntil(carriageReturn)
 		serial.readUntil(commandReady)
 		basic.pause(20)
 		return returnString
-	}
+	}*/
 	
 	/**
 	* Returns the size of the specified file
