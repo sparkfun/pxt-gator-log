@@ -169,7 +169,7 @@ namespace gatorLog {
 	
 	/**
 	* Writes text to the current open file. If no file has been opened, this will be recorded to the LOGxxxx.txt folder
-	
+	*/
 	//% blockId="gatorLog_writeText"
 	//% weight=43
 	//% block="write %value | to current file"
@@ -184,11 +184,11 @@ namespace gatorLog {
 		commandMode = 0
 		basic.pause(20)
 		return
-	}*/
+	}
 	
 	/**
 	* Writes text to the current open file at the position specified. If no file has been opened, this will be recorded to the LOGxxxx.txt folder
-	
+	*/
 	//% weight=42
 	//% blockId="gatorLog_writeLineOffset"
 	//% block="write line %value | at position %offset"
@@ -204,11 +204,11 @@ namespace gatorLog {
 		serial.readUntil(commandReady)
 		basic.pause(20)
 		return
-	}*/
+	}
 	
 	/**
 	* Read contents of the file with the specified name
-	
+	*/
 	//% weight=41
 	//% blockId="gatorLog_readFile"
 	//% block="read file with name %value"
@@ -220,7 +220,7 @@ namespace gatorLog {
 		serial.readUntil(commandReady)
 		basic.pause(20)
 		return returnString
-	}*/
+	}
 	
 	/**
 	* Read data starting at the given position from the file with the specified name.
