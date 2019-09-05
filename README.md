@@ -1,40 +1,76 @@
-# gator:light Light Sensor
+# gator:log Data Logger
 
 [![Community Discord](https://img.shields.io/discord/448979533891371018.svg)](https://aka.ms/makecodecommunity)
 
-The gator:starter, which includes the gator:light and gator:temp can be purchased [here.](https://www.sparkfun.com/products/14891)
-The gator:light, included on the gator:starter is an analog light sensor that can be alligator clipped to the micro:bit or gator:bit board.
+The gator:log, which is an open source data logger based on the Serial OpenLog, can be used to write data to an SD card using a serial connection
 
-![SparkFun gator:light](https://raw.githubusercontent.com/sparkfun/pxt-gator-light/master/icon.png)  
+![SparkFun gator:log](https://raw.githubusercontent.com/sparkfun/pxt-gator-log/master/icon.png)  
 
 ## ~ hint
 
-To use this package, go to https://makecode.microbit.org, click ``Add package`` and search for **gator-light**. The package is located [here](https://makecode.microbit.org/pkg/sparkfun/pxt-gator-light)
+To use this package, go to https://makecode.microbit.org, click ``Add package`` and search for **gator-log**. The package is located [here](https://makecode.microbit.org/pkg/sparkfun/pxt-gator-log)
 
 ## ~
-
 ## Basic usage
 
 ```blocks
-//Sets the value of the light variable to the value read from the gator:light
-let light = 0
-light = gatorlight.light(AnalogPin.P0, gatorlightType.Lux)
+//Resets the gator:log so we can make sure the SD card is open and ready to write to
+gatorLog.begin()
 ```
 
-Use ``||Get light on pin||`` to read the light value from a gator:light sensor attached to a given pin in lux or the straight ADC value.
-
-## Example: Light Detector
+Use ``||initialize gator:log||`` to get the log ready to write to.
 
 ```blocks
-//Read light value and write it to the micro:bit screen as a bar graph.
-let light = 0
-basic.forever(function () {
-    light = gatorlight.light(AnalogPin.P0, gatorlightType.Lux)
-    led.plotBarGraph(
-        light,
-        1023
-    )
-})
+//Creates a directory with the name "Folder1". This does not change to the directory
+gatorLog.mkDirectory("Folder1")
+```
+
+Use ``||create folder with name"Folder1"||`` to create the folder.
+
+```blocks
+//Changes to a directory with the name "Folder1". This does not create the directory
+gatorLog.chDirectory("Folder1")
+```
+
+Use ``||change to "Folder1" folder||`` to change to the folder.
+
+```blocks
+//Creates a file named "myFile.txt", opens the file to be written to
+gatorLog.openFile("myFile.txt")
+```
+
+Use ``||open file named "myFile.txt"||`` to create and open a file.
+
+```blocks
+//Writes the text "Hello there" to the currently open file
+gatorLog.writeText("Hello there")
+```
+
+Use ``||write "Hello there" to current file||`` to write the string "Hello there" to the current file.
+
+```blocks
+//Writes the text "Hello there" to the currently open file with a new line.
+gatorLog.writeLine("Hello there")
+```
+
+Use ``||write line "Hello there" to current file||`` to write the string "Hello there" to the current file with a new line.
+
+```blocks
+//Writes the text "This is text" to the currently open file at position 10.
+gatorLog.writeLineOffset("This is text", 10)
+```
+
+Use ``||write line "This is text" at position 10||`` to write the string "This is text" to the current file at position 10.
+
+## Example: Basic Functionality Test
+
+```blocks
+gatorLog.begin()
+gatorLog.mkDirectory("Folder1")
+gatorLog.chDirectory("Folder1")
+gatorLog.openFile("myFile.txt")
+gatorLog.writeLine("Hello there")
+
 ```
 
 ## Supported targets
@@ -46,5 +82,5 @@ basic.forever(function () {
 MIT
 
 ```package
-gatorParticle=github:sparkfun/pxt-gator-particle
+gatorLog=github:sparkfun/pxt-gator-log
 ```
