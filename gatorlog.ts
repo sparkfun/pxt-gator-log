@@ -195,7 +195,7 @@ namespace gatorLog {
 	//% advanced=true
 	export function writeLineOffset(value: string, offset: number){
 		command()
-		serial.writeString("write " + currentFile + " " + String(offset) + carriageReturn)
+		serial.writeString("write " + currentFile + " " + offset.toString() + carriageReturn)
 		serial.readUntil(writeReady)
 		basic.pause(20)
 		serial.writeString(value + carriageReturn + newLine)
